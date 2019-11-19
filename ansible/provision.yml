@@ -1,0 +1,16 @@
+---
+###
+# provision playbook
+##
+
+- import_playbook: provision-00-common.yml
+  tags: [common]
+
+- import_playbook: provision-01-docker.yml
+  tags: [docker]
+
+- import_playbook: provision-02-docker-swarm.yml
+  tags: [docker-swarm]
+
+- import_playbook: provision-03-dev.yml
+  tags: [dev]

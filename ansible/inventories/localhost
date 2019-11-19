@@ -1,0 +1,39 @@
+###
+# localhost environement inventory file
+##
+# This file should not be edited
+# Please use these files instead:
+#  - ansible/group_vars/localhost.yml
+#  - ansible/group_vars/localhost_overrides.yml
+#  - ansible/group_vars/localhost_bindmounts.yml
+##
+
+localhost
+
+[localhost]
+localhost
+
+[localhost:vars]
+dockerswarm_iface=lo
+swarm_dev_ip=127.0.0.1
+
+[localhost_bindmounts]
+localhost
+
+[localhost_overrides]
+localhost
+
+[dev]
+localhost
+
+[dev_overrides]
+localhost
+
+[docker]
+localhost
+
+[dockerswarm_manager]
+localhost
+
+[dockerswarm_worker]
+

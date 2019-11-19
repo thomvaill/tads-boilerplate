@@ -1,0 +1,8 @@
+---
+###
+# vagrant environement variables
+##
+
+# We use the .test reserved TLD
+# @see https://tools.ietf.org/id/draft-chapin-rfc2606bis-00.html#legacy
+domains_tld: test

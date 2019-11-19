@@ -1,0 +1,28 @@
+---
+###
+# provision-03-dev playbook
+##
+# Update /etc/hosts of local machine for localhost and vagrant environements
+##
+
+- hosts: vagrant
+  tasks:
+    - name: "Update /etc/hosts on VMs"
+      become: True
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ swarm_dev_ip }} {{ item.value }}"
+      with_dict: "{{ domains }}"
+
+- hosts: dev
+  tags:
+    - etc_hosts
+  tasks:
+    - name: "Update /etc/hosts on host"
+      become: True
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ swarm_dev_ip }} {{ item.value }}"
+      with_dict: "{{ domains }}"
+      delegate_to: localhost
+      run_once: True

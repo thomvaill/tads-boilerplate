@@ -1,0 +1,78 @@
+#!/usr/bin/env python
+##
+# This Ansible Python module is used by provision-02-docker-swarm.yml
+#  to setup the Swarm cluster
+##
+#
+# Source: https://github.com/nextrevision/ansible-swarm-playbook/blob/master/library/docker_info_facts
+# Copyright 2016, This End Out, LLC.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+##
+
+DOCUMENTATION = """
+---
+module: docker_info_facts
+short_description:
+    - A module for injecting Docker info as facts.
+description:
+    - A module for injecting Docker info as facts.
+author: nextrevision
+"""
+
+EXAMPLES = """
+- name: load docker info facts
+  docker_info_facts:
+"""
+
+docker_lib_missing=False
+
+try:
+    from docker import Client
+except:
+    try:
+        from docker import APIClient as Client
+    except:
+        docker_lib_missing=True
+
+
+def _get_docker_info():
+    try:
+        return Client().info(), False
+    except Exception as e:
+        return {}, e.message
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(),
+        supports_check_mode=False
+    )
+
+    if docker_lib_missing:
+        msg = "Could not load docker python library; please install docker-py or docker library"
+        module.fail_json(msg=msg)
+
+    info, err = _get_docker_info()
+
+    if err:
+        module.fail_json(msg=err)
+
+    module.exit_json(
+        changed=True,
+        ansible_facts={'docker_info': info})
+
+
+from ansible.module_utils.basic import *
+if __name__ == '__main__':
+    main()

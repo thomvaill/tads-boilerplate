@@ -1,0 +1,36 @@
+###
+# production environement inventory file EXAMPLE
+##
+# This example should be used if you don't use Terraform,
+#  ie. you have an existing bare metal/VM infrastructure.
+#
+# This example shows a 3 nodes cluster: 3 managers, 0 workers
+#
+# Usage:
+#  - copy this file to "production"
+#  - replace <NODEx_IP> and <NODEx_PORT>
+#  - ./tads ansible-playbook production provision
+#  - ./tads ansible-playbook production deploy
+##
+
+node-1 ansible_user=root ansible_host=<NODE1_IP> ansible_port=<NODE1_PORT> dockerswarm_advertise_addr=<NODE1_IP>
+node-2 ansible_user=root ansible_host=<NODE2_IP> ansible_port=<NODE2_PORT> dockerswarm_advertise_addr=<NODE2_IP>
+node-3 ansible_user=root ansible_host=<NODE3_IP> ansible_port=<NODE3_PORT> dockerswarm_advertise_addr=<NODE3_IP>
+
+[production]
+node-[1:3]
+
+[docker:children]
+production
+
+[production_encrypted:children]
+production
+
+[dockerswarm_manager]
+node-[1:3]
+
+[dockerswarm_worker]
+# if you add more nodes, you can define them as workers here
+
+[docker:vars]
+dockerswarm_iface=eth0

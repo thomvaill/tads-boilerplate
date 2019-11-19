@@ -1,0 +1,90 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+require 'yaml'
+
+current_dir = File.dirname(File.expand_path(__FILE__))
+local_config = YAML.load_file("#{current_dir}/vagrant.yml")
+
+# *** CONFIG begin
+
+# Number of Docker Swarm nodes
+nb_swarm_nodes = local_config["nb_swarm_nodes"]
+
+# Number of Docker Swarm managers
+nb_swarm_managers = [nb_swarm_nodes, 3].min
+
+# Subnet to use for the VMs
+# Each machine's eth1 interface will be connected to this subnet
+subnet = local_config["subnet"]
+
+# Hostname suffix
+host_suffix = "vagrant-"
+
+# *** CONFIG end
+
+
+
+Vagrant.configure("2") do |config|
+  # ** Global config for all machines:
+  # Use debian 9
+  config.vm.box = "debian/stretch64"
+
+  # Disable default rsync of current host directory
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # ** Define "#{host_suffix}X" machines
+  (1..nb_swarm_nodes).each do |node_nb|
+    config.vm.define "#{host_suffix}#{node_nb}" do |machine|
+      machine.vm.hostname = "#{host_suffix}#{node_nb}"
+      machine.vm.network "private_network", ip: "#{subnet}.#{10+node_nb}"
+
+      machine.vm.provider "virtualbox" do |vb|
+        vb.gui = false
+        vb.memory = local_config["memory_per_node"]
+        vb.cpus = local_config["cpus_per_node"]
+      end
+
+      # Ansible provisioning
+      # Execute Ansible provisioner only when all machines are defined
+      #  ie only for the last VM
+      if node_nb == nb_swarm_nodes
+        machine.vm.provision :ansible do |ansible|
+          ansible.playbook = "../ansible/provision.yml"
+          ansible.compatibility_mode = "2.0"
+          ansible.raw_arguments = ["-D", "--skip-tags=etc_hosts"] # we can't update host's /etc/hosts because we need SUDO pwd
+
+          # Disable default limit to connect to all the machines
+          ansible.limit = "all"
+
+          # Build the dockerswarm_worker Ansible group, ie nodes that are not managers
+          if nb_swarm_managers < nb_swarm_nodes
+            ansible_dockerswarm_worker_group = ["#{host_suffix}[#{nb_swarm_managers+1}:#{nb_swarm_nodes}]"]
+          else
+            ansible_dockerswarm_worker_group = []
+          end
+
+          # Ansible groups
+          # This config will be added to the inventory file
+          ansible.groups = {
+            "vagrant" => ["#{host_suffix}[1:#{nb_swarm_nodes}]"],
+            "vagrant_overrides:children" => ["vagrant"],
+            "dev:children" => ["vagrant"],
+            "dev_overrides:children" => ["vagrant"],
+
+            "docker:children" => ["vagrant"],
+            "docker:vars" => {
+              "dockerswarm_iface" => "eth1",
+              "swarm_dev_ip" => "#{subnet}.11" # first host
+            },
+
+            "dockerswarm_manager" => ["#{host_suffix}[1:#{nb_swarm_managers}]"],
+            "dockerswarm_worker" => ansible_dockerswarm_worker_group
+          }
+        end
+      end
+
+    end
+  end
+
+end

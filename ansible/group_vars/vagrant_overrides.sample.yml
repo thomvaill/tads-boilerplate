@@ -1,0 +1,9 @@
+---
+###
+# vagrant environement overrides
+##
+# This file should be copied to "vagrant_overrides.yml" and be customized for this specific machine
+# It must not be versionned
+#
+# You may override some variables from all.yml here...
+##

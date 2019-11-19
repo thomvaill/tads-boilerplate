@@ -1,0 +1,15 @@
+---
+# This file should be copied to "vagrant.yml" and be customized for this specific machine
+
+# Subnet to use for the VMs
+# Each machine's eth1 interface will be connected to this subnet
+subnet: "192.168.78"
+
+# Number of Docker Swarm nodes
+nb_swarm_nodes: 3
+
+# Memory per Swarm node (in Mb) (you should decrease this value if you suffer memory issues)
+memory_per_node: 2048
+
+# CPUs per node (you should decrease this value if you suffer performance issues)
+cpus_per_node: 2

@@ -1,0 +1,9 @@
+---
+###
+# localhost environement overrides
+##
+# This file should be copied to "localhost_overrides.yml" and be customized for this specific machine
+# It must not be versionned
+#
+# You may override some variables from all.yml here...
+##

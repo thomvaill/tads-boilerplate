@@ -1,0 +1,90 @@
+##
+# traefik stack
+##
+# This file is a Jinja2 template
+# Which means you can use variables defined in group_vars here
+# @see https://docs.ansible.com/ansible/latest/user_guide/playbooks_templating.html
+##
+version: "3.6"
+
+networks:
+  traefik:
+    driver: overlay
+  apps:
+    driver: overlay
+    external: true # this network is created by Ansible, because it is shared by multiple stacks
+
+services:
+  # TRAEFIK
+  # Reverse proxy deployed on each node (global)
+  traefik:
+    image: traefik:v1.7.4
+    command:
+      - --api
+      - --docker
+      - --docker.swarmMode
+      - --docker.domain={{ domains.main }} # variable from group_vars
+      - --docker.watch
+      - --docker.exposedByDefault=false
+      - --logLevel=ERROR
+      - --api.dashboard=false
+      - --api.entryPoint=traefik
+      - --entrypoints=Name:http Address::80 Redirect.EntryPoint:https
+      - --entrypoints=Name:https Address::443 TLS
+      - --accessLog
+
+{% if letsencrypt %} # you can also use conditional statements
+      - --acme
+      - --acme.acmeLogging
+      - --acme.storage=traefik/acme/account
+      - --acme.entryPoint=https
+      - --acme.email=admin@{{ domains.main }}
+      - --acme.httpchallenge.entrypoint=http # you should use a DNS challenge for wildcard certs (https://docs.traefik.io/https/acme/)
+      - --acme.domains={{ domains.main }},{{ domains.main_www }}
+{% endif %}
+
+      - --defaultentrypoints=http,https
+      - --consul
+      - --consul.prefix=traefik
+      - --consul.endpoint=traefik_consul:8500
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+    dns: 8.8.8.8
+    networks:
+      - traefik
+      - apps
+    ports:
+      - target: 80
+        published: 80
+        mode: host
+      - target: 443
+        published: 443
+        mode: host
+    deploy:
+      mode: global
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 30M
+        reservations:
+          cpus: '0.10'
+          memory: 20M
+
+  # CONSUL
+  # Used by Traefik to store its state
+  traefik_consul:
+    image: progrium/consul
+    command: -server -bootstrap -ui-dir /ui
+    networks:
+      - traefik
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 30M

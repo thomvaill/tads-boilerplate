@@ -1,0 +1,46 @@
+---
+##
+# docker-stack role tasks
+##
+
+- name: Create secrets
+  docker_secret:
+    name: "{{ item.name }}"
+    data: "{{ item.data }}"
+    state: present
+  with_items: "{{ docker_stack_secrets }}"
+
+- name: Create stack configuration directory
+  file:
+    path: "~/.tads/stacks/{{ docker_stack_name }}"
+    state: directory
+    recurse: yes
+
+- name: Copy stack YAML
+  template:
+    src: "{{ docker_stack_yaml_local_path }}"
+    dest: "~/.tads/stacks/{{ docker_stack_name }}/{{ docker_stack_name }}.yml"
+
+- name: Test stack resources existance
+  stat:
+    path: "{{ docker_stack_resources_local_path }}"
+  delegate_to: localhost
+  register: stat_result
+
+- name: Copy stack resources
+  copy:
+    src: "{{ docker_stack_resources_local_path }}"
+    dest: "~/.tads/stacks/{{ docker_stack_name }}"
+  when: stat_result.stat.exists
+
+- name: Deploy stack
+  docker_stack:
+    state: present
+    name: "{{ docker_stack_name }}"
+    compose:
+    - "~/.tads/stacks/{{ docker_stack_name }}/{{ docker_stack_name }}.yml"
+  register: stack_deploy
+
+- debug:
+    var: stack_deploy.stack_spec_diff # noqa 503
+  when: stack_deploy.changed

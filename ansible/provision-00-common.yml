@@ -1,0 +1,44 @@
+---
+###
+# provision-00-common playbook
+##
+# Perform basic OS configuration
+##
+
+# Ignore SSH host key checking on first run
+# Useful when VMs have just been created with Terraform and host keys
+#  are not yet in your ~/.ssh/known_hosts file
+#
+# Remote environments only
+- hosts: docker:!dev
+  gather_facts: no
+  tasks:
+    - name: Check known_hosts for each hostname
+      command: ssh-keygen -F {{ hostvars[inventory_hostname]['ansible_host'] }}
+      delegate_to: localhost
+      register: has_entry_in_known_hosts_file
+      changed_when: false
+      ignore_errors: yes
+
+    - name: Ignore host key on first run
+      when: has_entry_in_known_hosts_file.rc == 1
+      set_fact:
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=no'
+
+
+# Basic OS config
+#
+# All environments except localhost
+- hosts: docker:!localhost
+  tasks:
+    - name: Set timezone to Etc/UTC
+      become: True
+      timezone:
+        name: Etc/UTC
+
+    - name: Add SSH authorized_keys
+      become: True
+      authorized_key:
+        user: "{{ ansible_user }}"
+        key: "{{ item }}"
+      with_items: "{{ docker_authorized_ssh_keys }}"

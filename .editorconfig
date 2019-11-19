@@ -1,0 +1,30 @@
+# EditorConfig is awesome: https://EditorConfig.org
+# For Visual Studio Code, please install this extension: https://github.com/editorconfig/editorconfig-vscode
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[Makefile]
+indent_style = tab
+
+[*.json]
+indent_size = 2
+
+[*.tf]
+indent_size = 2
+
+[*.{yml,yaml}]
+indent_size = 2
+
+[*.js]
+indent_size = 2
+
+[*.{diff,md}]
+trim_trailing_whitespace = false

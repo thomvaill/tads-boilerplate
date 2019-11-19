@@ -1,0 +1,150 @@
+---
+###
+# provision-02-docker-swarm playbook
+##
+# Set up the Swarm cluster and put it into the desired state
+#
+# Playbook inspired by https://github.com/nextrevision/ansible-swarm-playbook
+# Big thanks to John Patterson for his work!
+##
+
+# use dockerswarm_advertise_addr instead of iface when ethX has multiple IP addresses
+- hosts: docker
+  tasks:
+    - name: define dockerswarm_advertise_addr_string (defined)
+      set_fact:
+        dockerswarm_advertise_addr_string: "{{ dockerswarm_advertise_addr }}"
+      when: dockerswarm_advertise_addr is defined
+    - name: define dockerswarm_advertise_addr_string (defined)
+      set_fact:
+        dockerswarm_advertise_addr_string: "{{ dockerswarm_iface | default('eth0') }}"
+      when: dockerswarm_advertise_addr is not defined
+
+# determine the status of each manager node and break them
+# into two groups:
+#   - dockerswarm_manager_operational (swarm is running and active)
+#   - dockerswarm_manager_bootstrap (host needs to be joined to the cluster)
+- hosts: docker:&dockerswarm_manager
+  tasks:
+    - name: load docker info as facts
+      docker_info_facts:
+      changed_when: False
+
+    - name: create dockerswarm_manager_operational group
+      add_host:
+        hostname: "{{ item }}"
+        groups: dockerswarm_manager_operational
+      with_items: "{{ ansible_play_hosts | default(play_hosts) }}"
+      when: hostvars[item]['docker_info']['Swarm']['LocalNodeState'] == 'active'
+      run_once: true
+      changed_when: False
+
+    - name: create dockerswarm_manager_bootstrap group
+      add_host:
+        hostname: "{{ item }}"
+        groups: dockerswarm_manager_bootstrap
+      with_items: "{{ ansible_play_hosts | default(play_hosts) }}"
+      when: hostvars[item]['docker_info']['Swarm']['LocalNodeState'] != 'active'
+      run_once: true
+      changed_when: False
+
+# determine the status of each worker node and break them
+# into two groups:
+#   - dockerswarm_worker_operational (host is joined to the swarm cluster)
+#   - dockerswarm_worker_bootstrap (host needs to be joined to the cluster)
+- hosts: docker:&dockerswarm_worker
+  tasks:
+    - name: load docker info as facts
+      docker_info_facts:
+      changed_when: False
+
+    - name: create dockerswarm_worker_operational group
+      add_host:
+        hostname: "{{ item }}"
+        groups: dockerswarm_worker_operational
+      with_items: "{{ ansible_play_hosts | default(play_hosts) }}"
+      when: hostvars[item]['docker_info']['Swarm']['LocalNodeState'] == 'active'
+      run_once: true
+      changed_when: False
+
+    - name: create dockerswarm_worker_bootstrap group
+      add_host:
+        hostname: "{{ item }}"
+        groups: dockerswarm_worker_bootstrap
+      with_items: "{{ ansible_play_hosts | default(play_hosts) }}"
+      when: hostvars[item]['docker_info']['Swarm']['LocalNodeState'] != 'active'
+      run_once: true
+      changed_when: False
+
+# when the dockerswarm_manager_operational group is empty, meaning there
+# are no hosts running swarm, we need to initialize one of the hosts
+# then add it to the dockerswarm_manager_operational group
+- hosts: dockerswarm_manager_bootstrap[0]
+  tasks:
+    - name: initialize swarm cluster
+      command: >
+        docker swarm init
+        --advertise-addr={{ dockerswarm_advertise_addr_string | default('eth0') }}:2377
+      when: "'dockerswarm_manager_operational' not in groups"
+      register: bootstrap_first_node
+
+    - name: add initialized host to dockerswarm_manager_operational group  # noqa 503
+      add_host:
+        hostname: "{{ item }}"
+        groups: dockerswarm_manager_operational
+      with_items: "{{ ansible_play_hosts | default(play_hosts) }}"
+      when: bootstrap_first_node.changed
+
+# retrieve the swarm tokens and populate a list of ips listening on
+# the swarm port 2377
+- hosts: dockerswarm_manager_operational[0]
+  vars:
+    iface: "{{ dockerswarm_iface | default('eth0') }}"
+  tasks:
+    - name: retrieve swarm manager token
+      command: docker swarm join-token -q manager
+      register: dockerswarm_manager_token
+      changed_when: False
+
+    - name: retrieve swarm worker token
+      command: docker swarm join-token -q worker
+      register: dockerswarm_worker_token
+      changed_when: False
+
+    - name: populate list of manager ips from dockerswarm_advertise_addr
+      add_host:
+        hostname: "{{ dockerswarm_advertise_addr }}"
+        groups: dockerswarm_manager_ips
+      when: dockerswarm_advertise_addr is defined
+      changed_when: False
+
+    - name: populate list of manager ips from iface
+      add_host:
+        hostname: "{{ hostvars[item]['ansible_' + iface]['ipv4']['address'] }}"
+        groups: dockerswarm_manager_ips
+      when: dockerswarm_advertise_addr is not defined
+      with_items: "{{ ansible_play_hosts | default(play_hosts) }}"
+      changed_when: False
+
+# join the hosts not yet initialized to the swarm cluster
+- hosts: dockerswarm_manager_bootstrap:!dockerswarm_manager_operational
+  vars:
+    token: "{{ hostvars[groups['dockerswarm_manager_operational'][0]]['dockerswarm_manager_token']['stdout'] }}"
+  tasks:
+    - name: join manager nodes to cluster # noqa 301
+      command: >
+        docker swarm join
+        --advertise-addr={{ dockerswarm_advertise_addr_string | default('eth0') }}:2377
+        --token={{ token }}
+        {{ groups['dockerswarm_manager_ips'][0] }}:2377
+# join the remaining workers to the swarm cluster
+- hosts: dockerswarm_worker_bootstrap
+  vars:
+    token: "{{ hostvars[groups['dockerswarm_manager_operational'][0]]['dockerswarm_worker_token']['stdout'] }}"
+  tasks:
+    - name: join worker nodes to cluster # noqa 301
+      command: >
+        docker swarm join
+        --advertise-addr={{ dockerswarm_advertise_addr_string | default('eth0') }}
+        --token={{ token }}
+        {{ groups['dockerswarm_manager_ips'][0] }}:2377

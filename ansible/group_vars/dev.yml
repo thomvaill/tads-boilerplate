@@ -1,0 +1,19 @@
+---
+###
+# local environements variables
+##
+# This group applies to local environements (localhost and vagrant)
+#
+# You may override some variables from all.yml here...
+##
+
+# We can't use ACME in local environements
+# Traefik's self signed certificate will be used
+letsencrypt: False
+
+# Credentials
+# You should set default development credentials here
+credentials:
+  example_app:
+    username: dev
+    password: 123456789

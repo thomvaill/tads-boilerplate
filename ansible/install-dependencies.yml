@@ -1,0 +1,28 @@
+---
+###
+# install-dependencies playbook
+##
+# Used by ./tads install-dependencies
+##
+
+- hosts: localhost
+  tasks:
+    - name: Install Vagrant and Virtualbox
+      become: yes
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - virtualbox
+        - vagrant
+
+    - name: Install Terraform
+      shell: >
+          wget -O /tmp/terraform.zip "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+          && unzip -d ~/.local/bin /tmp/terraform.zip
+          && rm -f /tmp/terraform.zip
+      environment:
+        TERRAFORM_VERSION: 0.12.12
+      args:
+        creates: ~/.local/bin/terraform
+        warn: False

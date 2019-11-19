@@ -1,0 +1,2 @@
+All the files of this directory will be copied next to the Docker stack YAML file
+So they are available

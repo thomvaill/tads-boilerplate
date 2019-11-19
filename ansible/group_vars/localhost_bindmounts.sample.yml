@@ -1,0 +1,12 @@
+---
+###
+# localhost environement bind mounts
+##
+# This file should be copied to "localhost_bindmounts.yml" and be customized for this specific machine
+# It must not be versionned
+#
+# Bind mounts are useful to mount some code into your Docker containers, to develop
+##
+
+dev_bindmounts:
+  example_app: ~/git/example_app/src

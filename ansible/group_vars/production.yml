@@ -1,0 +1,10 @@
+---
+###
+# production environement variables
+##
+# You may override some variables from all.yml here...
+##
+
+# docker_authorized_ssh_keys:
+#   - "ssh-rsa XXX userA@host"
+#   - "ssh-rsa YYY userB@host"

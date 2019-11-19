@@ -1,0 +1,57 @@
+##
+# example_app stack
+##
+# This file is a Jinja2 template
+# Which means you can use variables defined in group_vars here
+# @see https://docs.ansible.com/ansible/latest/user_guide/playbooks_templating.html
+##
+version: "3.6"
+
+networks:
+  apps:
+    driver: overlay
+    external: true # this network is created by Ansible, because it is shared by multiple stacks
+
+secrets:
+  example_app_password-v1:
+    external: true # this secret is created by Ansible
+                   # tip: if you update secret content, you should increment the version in its name
+                   #       because Ansible cannot update a secret
+
+configs:
+  example_app_config:
+    file: ./resources/example.txt # all the files in the resources/ directory are copied and available here
+
+services:
+  # HELLOWORLD
+  helloworld:
+    image: nginxdemos/hello:0.2 # always use tags!
+    environment:
+      EXAMPLE_USERNAME: {{ credentials.example_app.username }} # it's easy to set environement vars from group_vars
+      EXAMPLE_PASSWORD_FILE: /run/secrets/example_app_password-v1
+    networks:
+      - apps
+    secrets:
+      - example_app_password-v1
+    configs:
+      - example_app_config
+{% if dev_bindmounts.example_app is defined %}
+    volumes:
+      - {{ dev_bindmounts.example_app }}:/usr/share/nginx/html # dev bind mounts can be set in ansible/group_vars/localhost_bindmounts.yml
+{% endif %}
+    deploy:
+      mode: replicated
+      replicas: 2
+      labels:
+        - traefik.enable=true
+        - traefik.port=80
+        - traefik.frontend.rule=Host:{{ domains.main }},{{ domains.main_www }}
+        - traefik.docker.network=apps
+        - traefik.frontend.entryPoints=http,https
+        - traefik.backend.loadbalancer.swarm=true
+        - traefik.frontend.redirect.regex=^https?://{{ domains.main_www }}/(.*)
+        - traefik.frontend.redirect.replacement=https://{{ domains.main }}/$${1}
+      resources:
+        limits:
+          cpus: '0.20'
+          memory: 30M

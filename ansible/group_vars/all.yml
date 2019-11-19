@@ -1,0 +1,53 @@
+---
+###
+# Variables default values
+##
+# We recommend to use production values here
+# These variables can be overriden later in other group_vars files
+#
+# Here is the Ansible groups structure:
+#  all
+#  ├── dev
+#  |   ├── localhost
+#  |   └── vagrant
+#  ├── production
+#  ├── staging
+#  └── any_other_remote_environement...
+#
+# Each group has its "_overrides" counterpart, which enables you to override
+#  some variables locally in a xxx_overrides.yml file, which is not versionned
+# Have a look at .sample.yml files to see some examples
+##
+
+
+# Environment
+# Useful variable to perform Jinja2 conditions in your stack templates
+#  or to pass as an environment variable to your Docker services
+app_env: production
+
+# Allowed SSH keys
+# It is better to define them for each environment rather than globally
+# You should leave it empty here
+docker_authorized_ssh_keys: []
+
+# Enable traefik ACME feature
+# If enabled, traefik will use Let's Encrypt to get an SSL certificate automatically
+# Should be disabled only on local environments (localhost or vagrant)
+letsencrypt: True
+
+# Domains
+# You should list all domain names that you use in the "domains" dict
+# This dict will be used by Ansible to hardcode them in /etc/hosts when you use local environments (localhost or vagrant)
+# That is why it is also recommended to use a "domains_tld" variable, so you don't have to repeat yourself in other group_vars files
+domains_tld: com
+domains:
+  main: "yourcompany.{{ domains_tld }}"
+  main_www: "www.yourcompany.{{ domains_tld }}"
+
+# Bind mounts
+# Must only be used in localhost environment
+# Useful to mount code into your containers, to develop
+dev_bindmounts:
+
+# geerlingguy.docker role configuration
+docker_edition: ce

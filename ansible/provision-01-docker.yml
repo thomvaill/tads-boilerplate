@@ -1,0 +1,33 @@
+---
+###
+# provision-01-docker playbook
+##
+# Install Docker, Python, pip and pip packages required by Ansible
+##
+
+- hosts: docker
+  become: True
+  roles:
+    - role: geerlingguy.pip
+      vars:
+        pip_install_packages:
+        - name: jsondiff # needed by Ansible docker_stack module
+        - name: pyyaml   # needed by Ansible docker_stack module
+        - name: docker
+        # - name: docker-py # We do not use docker-py because it does not handle "docker config" correctly
+
+    - role: geerlingguy.docker
+      vars:
+        docker_package_state: present
+        docker_install_compose: False
+
+  post_tasks:
+    - name: Ensure current user is added to the docker group
+      user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: yes
+      register: user_status
+
+    - name: Reload current user groups
+      meta: reset_connection

@@ -1,0 +1,21 @@
+---
+###
+# production environement ENCRYPTED variables
+##
+# This file must be encrypted before being commited!
+#
+# To do so:
+#  1. Run ./tads ansible-vault init-key production
+#  2. Save the generated key (in ansible/vault_keys/production) in a secure place for you and your authorized team members
+#  3. Run ./tads ansible-vault encrypt ansible/group_vars/production_encrypted.yml
+#
+# Nobody will be able to see or use the contents of this file unless he has the key (AES-256 encrypted)
+#
+# This file should be typically used to store credentials
+##
+
+# Credentials
+credentials:
+  example_app:
+    username: prod
+    password: my_ultra_secured_production_pa$$w0rd

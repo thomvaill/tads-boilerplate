@@ -29,5 +29,7 @@
         append: yes
       register: user_status
 
+- hosts: docker:!localhost
+  tasks:
     - name: Reload current user groups
-      meta: reset_connection
+      meta: reset_connection # reset connection so the new docker group is taken into account. Not available for localhost :(

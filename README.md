@@ -2,8 +2,10 @@
 
 [![Build Status](https://travis-ci.com/Thomvaill/tads-boilerplate.svg?branch=master)](https://travis-ci.com/Thomvaill/tads-boilerplate)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?text=Get%20started%20with%20Infrastructure%20as%20Code%20with%20T.A.D.S.%20https%3A%2F%2Fgithub.com%2FThomvaill%2Ftads-boilerplate%20-%20A%20boilerplate%20created%20by%20%40thomvaill%20which%20combines%20%23Terraform%20%23Ansible%20%23Vagrant%20and%20%23DockerSwarm.%20%23Docker%20%23DevOps%20%23IaC)
 
-<div align="center">The power of Ansible and Terraform + the simplicity of Swarm = DevOps on :fire::fire::fire:</div>
+<div align="center"><strong>The power of Ansible and Terraform + the simplicity of Swarm = DevOps on :fire::fire::fire:</strong></div>
+<br />
 
 ![T.A.D.S. logo](.github/tads-header.png)
 

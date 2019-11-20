@@ -1,6 +1,6 @@
 # T.A.D.S. boilerplate <!-- omit in toc -->
 
-[![Build Status](https://travis-ci.org/Thomvaill/tads-boilerplate.svg?branch=master)](https://travis-ci.org/Thomvaill/tads-boilerplate)
+[![Build Status](https://travis-ci.com/Thomvaill/tads-boilerplate.svg?branch=master)](https://travis-ci.com/Thomvaill/tads-boilerplate)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <div align="center">The power of Ansible and Terraform + the simplicity of Swarm = DevOps on :fire::fire::fire:</div>
@@ -141,6 +141,8 @@ This will install Ansible, Vagrant, Virtualbox and Terraform on your local machi
 ```
 
 You can also manually install the dependencies if your preferer.
+
+**Tip:** if you want to install dev dependencies as well (ansible-lint, shellcheck...), add `--dev` option.
 
 ### 3. Provision your local machine and deploy the example stack
 

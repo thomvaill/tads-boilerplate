@@ -26,3 +26,24 @@
       args:
         creates: ~/.local/bin/terraform
         warn: False
+
+- hosts: localhost
+  tags:
+    - dev_dependencies
+  tasks:
+    - name: Install ansible-lint
+      become: True
+      pip:
+        name: ansible-lint
+
+    - name: Install shellcheck
+      become: True
+      shell: >
+          (wget -qO- "https://storage.googleapis.com/shellcheck/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" | tar -xJv --directory /tmp)
+          && cp "/tmp/shellcheck-${SHELLCHECK_VERSION}/shellcheck" /usr/bin/
+          && rm -rf /tmp/shellcheck-${SHELLCHECK_VERSION}
+      environment:
+        SHELLCHECK_VERSION: v0.6.0
+      args:
+        creates: /usr/bin/shellcheck
+        warn: False

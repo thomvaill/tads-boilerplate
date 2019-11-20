@@ -17,17 +17,47 @@ source "${SELF_PATH}/../includes/common.sh"
 source "${SELF_PATH}/../includes/localhost_ansible.sh"
 
 main () {
+    local no_password=false
+    local force=false
+    local dev_dependencies=false
+
+    local options
+    options=$(getopt --longoptions no-password,force,dev, --options "" -- "$@")
+
+    eval set -- "$options"
+    while true; do
+    echo "$1"
+        case "$1" in
+        --no-password)
+            no_password=true
+            ;;
+        --force)
+            force=true
+            ;;
+        --dev)
+            dev_dependencies=true
+            ;;
+        --)
+            shift
+            break
+            ;;
+        esac
+        shift
+    done
+
     echo "This script will install the following dependencies on your local machine using apt-get:"
     echo " - Ansible"
     echo " - Vagrant and Virtualbox"
     echo " - Terraform"
     echo ""
 
-    local response
-    read -r -p "Are you sure? [y/N] " response
-    if [[ ! "${response}" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-        echo "Aborted."
-        exit
+    if [[ ! "${force}" == true ]]; then
+        local response
+        read -r -p "Are you sure? [y/N] " response
+        if [[ ! "${response}" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+            echo "Aborted."
+            exit
+        fi
     fi
 
     echo "Installing Ansible..."
@@ -45,10 +75,18 @@ main () {
     fi
 
     echo "Installing Vagrant, Virtualbox and Terraform..."
-    echo "Your SUDO password will be asked"
-    localhost_ansible_playbook "${ROOT_PATH}/ansible/install-dependencies.yml" --ask-become-pass
+
+    local playbook_skip_tags="dev_dependencies"
+    [[ "${dev_dependencies}" == true ]] && playbook_skip_tags=""
+
+    if [[ "${no_password}" == true ]]; then
+        localhost_ansible_playbook "${ROOT_PATH}/ansible/install-dependencies.yml" --skip-tags "${playbook_skip_tags}"
+    else
+        echo "Your SUDO password will be asked"
+        localhost_ansible_playbook "${ROOT_PATH}/ansible/install-dependencies.yml" --skip-tags "${playbook_skip_tags}" --ask-become-pass
+    fi
 
     echo "Finished!"
 }
 
-main
+main "$@"

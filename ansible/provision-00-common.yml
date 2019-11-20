@@ -6,11 +6,11 @@
 ##
 
 # Ignore SSH host key checking on first run
-# Useful when VMs have just been created with Terraform and host keys
+# Useful when VMs have just been created with Terraform or Vagrant and host keys
 #  are not yet in your ~/.ssh/known_hosts file
 #
-# Remote environments only
-- hosts: docker:!dev
+# Vagrant and Remote environments
+- hosts: docker:!localhost
   gather_facts: no
   tasks:
     - name: Check known_hosts for each hostname

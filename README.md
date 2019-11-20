@@ -52,6 +52,11 @@ On top of that, it features:
 - A companion CLI (`./tads`), which is basically a wrapper of Terraform, Ansible and Vagrant commands. For example: `ansible-playbook -i inventories/production -D --vault-id production@vault_keys/production deploy.yml` becomes `./tads ansible-playbook production deploy` :-)
 - Templated Docker Swarm Compose files with Jinja2, so you can define your services once, while being able to customize them according to the environement
 
+With T.A.D.S., you will be able to onboard a new developer on your project in 02:30, with just 3 commands! No more outdated wikis or installation procedures. Even if you have a complex microservices architecture.
+
+[![Example of a fresh development environment setup with T.A.D.S. in 02:30!](https://asciinema.org/a/282625.svg)](https://asciinema.org/a/282625)
+<div align="center"><small>Example of a fresh development environment setup with T.A.D.S. in 02:30!</small></div>
+
 ## :dart: Who is it for?
 
 If you recognize yourself into some of these statements, this project is definitely for you:

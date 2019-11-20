@@ -61,7 +61,7 @@ main () {
     fi
 
     echo "Installing Ansible..."
-    if ! dpkg -s ansible > /dev/null; then
+    if ! command -v ansible > /dev/null; then
         echo "Your SUDO password may be asked"
 
         set -x

@@ -27,9 +27,9 @@
   - [8. Add other remote environements](#8-add-other-remote-environements)
   - [9. Make your team members autonomous](#9-make-your-team-members-autonomous)
 - [:question: FAQ](#question-faq)
-- [:large_blue_circle: Contributing](#large_blue_circle-contributing)
-- [:large_blue_circle: Aknowledgements](#large_blue_circle-aknowledgements)
-- [:large_blue_circle: License](#large_blue_circle-license)
+- [Contributing](#contributing)
+- [Aknowledgements](#aknowledgements)
+- [License](#license)
 
 ## :tada: What is it?
 
@@ -343,16 +343,16 @@ I advise you to have a look at [REX-Ray](https://github.com/rexray/rexray).
 
 This might be a future feature to implement this plugin in the boilerplate.
 
-## :large_blue_circle: Contributing
+## Contributing
 
 Pull Requests are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
 
-## :large_blue_circle: Aknowledgements
+## Aknowledgements
 
 - John Patterson for his [ansible-swarm-playbook](https://github.com/nextrevision/ansible-swarm-playbook) and his [article](https://thisendout.com/2016/09/13/deploying-docker-swarm-with-ansible/)
 - Jeff Geerling for his [pip](https://github.com/geerlingguy/ansible-role-pip) and [docker](https://github.com/geerlingguy/ansible-role-docker) Ansible roles
 - The [forMetris](https://github.com/forMetris) team for being first users/testers of the project, and especially Axel Marbois for his contribution
 
-## :large_blue_circle: License
+## License
 
 This project is licensed under the MIT license, Copyright (c) 2019 Thomas Vaillant. For more information see [LICENSE](LICENSE) file.

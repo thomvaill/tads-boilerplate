@@ -55,7 +55,7 @@ On top of that, it features:
 With T.A.D.S., you will be able to onboard a new developer on your project in 02:30, with just 3 commands! No more outdated wikis or installation procedures. Even if you have a complex microservices architecture.
 
 [![Example of a fresh development environment setup with T.A.D.S. in 02:30!](https://asciinema.org/a/282625.svg)](https://asciinema.org/a/282625)
-<div align="center"><small>Example of a fresh development environment setup with T.A.D.S. in 02:30!</small></div>
+<div align="center"><sub>Example of a fresh development environment setup with T.A.D.S. in 02:30!</sub></div>
 
 ## :dart: Who is it for?
 

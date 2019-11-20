@@ -8,32 +8,32 @@
 #  - ansible/group_vars/localhost_bindmounts.yml
 ##
 
-localhost
+127.0.0.1
 
 [localhost]
-localhost
+127.0.0.1
 
 [localhost:vars]
 dockerswarm_iface=lo
 swarm_dev_ip=127.0.0.1
 
 [localhost_bindmounts]
-localhost
+127.0.0.1
 
 [localhost_overrides]
-localhost
+127.0.0.1
 
 [dev]
-localhost
+127.0.0.1
 
 [dev_overrides]
-localhost
+127.0.0.1
 
 [docker]
-localhost
+127.0.0.1
 
 [dockerswarm_manager]
-localhost
+127.0.0.1
 
 [dockerswarm_worker]
 

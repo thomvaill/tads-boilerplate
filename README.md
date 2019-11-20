@@ -42,9 +42,9 @@ A boilerplate to create a full Infrastructure as Code (IaC) repository, from pro
 
 It handles different environements:
 
-- `localhost`: a single node Docker Swarm cluster on your machine, useful for development
-- `vagrant`: a 3 nodes production-like cluster deployed with Vagrant on your machine, useful for testing
-- `production`: the production :-) It can be created by Terraform or you can use an existing bare metal/VMs infrastructure
+- `localhost`: a single node Docker Swarm cluster on your machine, useful for development ([demo](https://asciinema.org/a/282625))
+- `vagrant`: a 3 nodes production-like cluster deployed with Vagrant on your machine, useful for testing ([demo](https://asciinema.org/a/282636))
+- `production`: the production :-) It can be created by Terraform or you can use an existing bare metal/VMs infrastructure ([demo](https://asciinema.org/a/282640))
 - other remote production-like environements of your choice: staging, qa...
 
 On top of that, it features:

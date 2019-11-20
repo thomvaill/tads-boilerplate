@@ -1,3 +1,5 @@
 language: shell
+before_install:
+  - ./tads install-dependencies --no-password --force
 script:
   - make lint

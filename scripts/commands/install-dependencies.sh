@@ -19,9 +19,10 @@ source "${SELF_PATH}/../includes/localhost_ansible.sh"
 main () {
     local no_password=false
     local force=false
+    local dev_dependencies=false
 
     local options
-    options=$(getopt --longoptions no-password,force, --options "" -- "$@")
+    options=$(getopt --longoptions no-password,force,dev, --options "" -- "$@")
 
     eval set -- "$options"
     while true; do
@@ -32,6 +33,9 @@ main () {
             ;;
         --force)
             force=true
+            ;;
+        --dev)
+            dev_dependencies=true
             ;;
         --)
             shift
@@ -72,11 +76,14 @@ main () {
 
     echo "Installing Vagrant, Virtualbox and Terraform..."
 
+    local playbook_skip_tags="dev_dependencies"
+    [[ "${dev_dependencies}" == true ]] && playbook_skip_tags=""
+
     if [[ "${no_password}" == true ]]; then
-        localhost_ansible_playbook "${ROOT_PATH}/ansible/install-dependencies.yml"
+        localhost_ansible_playbook "${ROOT_PATH}/ansible/install-dependencies.yml" --skip-tags "${playbook_skip_tags}"
     else
         echo "Your SUDO password will be asked"
-        localhost_ansible_playbook "${ROOT_PATH}/ansible/install-dependencies.yml" --ask-become-pass
+        localhost_ansible_playbook "${ROOT_PATH}/ansible/install-dependencies.yml" --skip-tags "${playbook_skip_tags}" --ask-become-pass
     fi
 
     echo "Finished!"

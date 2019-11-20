@@ -1,6 +1,6 @@
 language: shell
 before_install:
-  - ./tads install-dependencies --no-password --force
+  - ./tads install-dependencies --no-password --force --dev
 install:
   - ./tads terraform production init
 script:

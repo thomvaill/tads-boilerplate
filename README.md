@@ -142,6 +142,8 @@ This will install Ansible, Vagrant, Virtualbox and Terraform on your local machi
 
 You can also manually install the dependencies if your preferer.
 
+**Tip:** if you want to install dev dependencies as well (ansible-lint, shellcheck...), add `--dev` option.
+
 ### 3. Provision your local machine and deploy the example stack
 
 ```bash

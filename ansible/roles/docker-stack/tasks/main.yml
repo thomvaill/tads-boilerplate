@@ -9,6 +9,7 @@
     data: "{{ item.data }}"
     state: present
   with_items: "{{ docker_stack_secrets }}"
+  no_log: True
 
 - name: Create stack configuration directory
   file:

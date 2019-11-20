@@ -16,7 +16,7 @@ usage() {
     local error_msg=${1:-}
     local cmd="./${SELF_NAME}"
 
-    if [[ ! -z $error_msg ]]; then
+    if [[ -n $error_msg ]]; then
         echo ""
         echo_red "${error_msg}"
     fi

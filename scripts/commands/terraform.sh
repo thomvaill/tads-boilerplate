@@ -119,7 +119,7 @@ gen_ansible_inventory_from_terraform () {
 
     local manager_nodes="manager-[1:$((manager_index-1))]"
     local worker_nodes
-    worker_nodes=$([[ ! -z ${worker_ips} ]] && echo "worker-[1:$((worker_index-1))]")
+    worker_nodes=$([[ -n ${worker_ips} ]] && echo "worker-[1:$((worker_index-1))]")
 
 cat <<EOT >> "${inventory_path}"
 

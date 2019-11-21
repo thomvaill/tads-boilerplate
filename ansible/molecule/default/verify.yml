@@ -35,11 +35,11 @@
     - debug: var=example_app.stdout
 
     - name: Check that example_app is working
-      command: 'curl -k -I --fail --silent -H "Host: yourcompany.com" https://localhost/'
+      command: 'curl -vvv -k -I --fail --silent -H "Host: yourcompany.com" https://127.0.0.1/'
       changed_when: False
       args:
         warn: False
-      retries: 30
-      delay: 10
-      register: result
-      until: result.rc == 0
+      # retries: 30
+      # delay: 10
+      # register: result
+      # until: result.rc == 0

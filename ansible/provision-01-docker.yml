@@ -28,6 +28,7 @@
         groups: docker
         append: yes
       register: user_status
+      when: "'test' not in group_names"
 
 - hosts: docker:!localhost
   tasks:

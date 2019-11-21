@@ -6,6 +6,14 @@ before_install:
   - ./tads install-dependencies --no-password --force --dev
 install:
   - ./tads terraform production init
-script:
-  - make lint
-  - make test
+jobs:
+  include:
+    - stage: test
+      name: Lint
+      script: make lint
+    - stage: test
+      name: Test Ansible roles
+      script: make test-ansible-roles
+    - stage: test
+      name: Ansible End-to-End test
+      script: make test-ansible-e2e

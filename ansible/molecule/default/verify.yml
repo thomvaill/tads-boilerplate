@@ -1,0 +1,17 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Check that traefik is deployed
+      command: "docker service inspect traefik_traefik"
+      changed_when: False
+
+    - name: Check that example_app is deployed
+      command: "docker service inspect example_app_helloworld"
+      changed_when: False
+
+    - name: Check that example_app is working
+      command: 'curl -k -I --fail -H "Host: yourcompany.com" https://localhost/'
+      changed_when: False
+      args:
+        warn: False

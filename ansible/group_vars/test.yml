@@ -1,0 +1,11 @@
+---
+###
+# test (molecule) variables
+##
+
+letsencrypt: False
+
+credentials:
+  example_app:
+    username: test
+    password: 123456789

@@ -27,7 +27,10 @@ lint-ansible: ## Perform an ansible-lint linting
 	ansible-lint ansible/*.yml
 
 #:## Test tasks
-test: test-roles ## Execute all test tasks
+test: test-ansible-roles test-ansible-e2e ## Execute all test tasks
 
-test-roles: ## Run roles molecule test
+test-ansible-roles: ## Test each Ansible role
 	for d in ansible/roles/*; do (cd $${d} && molecule test); done
+
+test-ansible-e2e: ## End-to-End Ansible test
+	cd ansible && molecule test

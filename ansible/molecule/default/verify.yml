@@ -11,7 +11,11 @@
       changed_when: False
 
     - name: Check that example_app is working
-      command: 'curl -k -I --fail -H "Host: yourcompany.com" https://localhost/'
+      command: 'curl -k -I --fail --silent -H "Host: yourcompany.com" https://localhost/'
       changed_when: False
       args:
         warn: False
+      retries: 6
+      delay: 10
+      register: result
+      until: result.rc == 0

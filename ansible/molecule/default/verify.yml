@@ -10,12 +10,32 @@
       command: "docker service inspect example_app_helloworld"
       changed_when: False
 
+    - name: Debug services
+      command: "docker service ls"
+      register: services
+    - debug: var=services.stdout
+
+    - name: Debug traefik
+      command: "docker service ps traefik_traefik --no-trunc"
+      register: traefik
+    - debug: var=traefik.stdout
+
+    - name: Debug consul
+      command: "docker service ps traefik_traefik_consul --no-trunc"
+      register: consul
+    - debug: var=consul.stdout
+
+    - name: Debug example_app
+      command: "docker service ps example_app_helloworld --no-trunc"
+      register: example_app
+    - debug: var=example_app.stdout
+
     - name: Check that example_app is working
       command: 'curl -k -I --fail --silent -H "Host: yourcompany.com" https://localhost/'
       changed_when: False
       args:
         warn: False
-      retries: 6
+      retries: 30
       delay: 10
       register: result
       until: result.rc == 0

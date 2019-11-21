@@ -28,9 +28,12 @@
         warn: False
 
     - name: Check that 2 example_app containers are running
-      shell: '{% raw %}docker container ps --filter "label=com.docker.swarm.service.name=example_app_helloworld" --format "{{.ID}}" | wc -l{% endraw %}'
+      shell: |
+        set -o pipefail
+        {% raw %}docker container ps --filter "label=com.docker.swarm.service.name=example_app_helloworld" --format "{{.ID}}" | wc -l{% endraw %} # noqa 206
       register: nb_example_app_containers
       changed_when: False
       failed_when: nb_example_app_containers.stdout != "2"
       args:
         warn: False
+        executable: /bin/bash

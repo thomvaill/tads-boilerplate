@@ -3,6 +3,7 @@ services:
   - docker
 before_install:
   - ./tads install-dependencies --no-password --force --dev
+  - sudo pip install -U pyopenssl # fix for molecule
 install:
   - ./tads terraform production init
 script:

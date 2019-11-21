@@ -1,7 +1,10 @@
 language: shell
+services:
+  - docker
 before_install:
   - ./tads install-dependencies --no-password --force --dev
 install:
   - ./tads terraform production init
 script:
   - make lint
+  - make test

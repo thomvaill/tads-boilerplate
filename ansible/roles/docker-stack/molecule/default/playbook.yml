@@ -1,0 +1,20 @@
+---
+- name: Converge
+  hosts: all
+  roles:
+    - role: docker-stack
+      vars:
+        docker_stack_name: simple_stack
+
+    - role: docker-stack
+      vars:
+        docker_stack_name: stack_with_resources
+
+    - role: docker-stack
+      vars:
+        docker_stack_name: stack_with_secrets
+        docker_stack_secrets:
+          - name: secret1
+            data: "test"
+          - name: secret2
+            data: "test"

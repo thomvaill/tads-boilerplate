@@ -25,3 +25,9 @@ lint-terraform: ## Perform a "terraform validate" linting
 
 lint-ansible: ## Perform an ansible-lint linting
 	ansible-lint ansible/*.yml
+
+#:## Test tasks
+test: test-roles ## Execute all test tasks
+
+test-roles: ## Run roles molecule test
+	for d in ansible/roles/*; do (cd $${d} && molecule test); done

@@ -31,10 +31,12 @@
   tags:
     - dev_dependencies
   tasks:
-    - name: Install ansible-lint
+    - name: Install ansible-lint and molecule
       become: True
       pip:
-        name: ansible-lint
+        name:
+          - ansible-lint
+          - molecule
 
     - name: Install shellcheck
       become: True

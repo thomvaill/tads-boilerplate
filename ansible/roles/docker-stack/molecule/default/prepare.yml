@@ -1,0 +1,14 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Test if Swarm is initialized
+      command: docker node ls
+      ignore_errors: True
+      register: swarm_status
+
+    - name: Initialize Swarm cluster
+      command: >
+        docker swarm init
+        --advertise-addr=127.0.0.1:2377
+      when: swarm_status.rc != 0

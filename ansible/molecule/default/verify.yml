@@ -12,21 +12,25 @@
 
     - name: Debug services
       command: "docker service ls"
+      changed_when: False
       register: services
     - debug: var=services.stdout
 
     - name: Debug traefik
       command: "docker service ps traefik_traefik --no-trunc"
+      changed_when: False
       register: traefik
     - debug: var=traefik.stdout
 
     - name: Debug consul
       command: "docker service ps traefik_traefik_consul --no-trunc"
+      changed_when: False
       register: consul
     - debug: var=consul.stdout
 
     - name: Debug example_app
       command: "docker service ps example_app_helloworld --no-trunc"
+      changed_when: False
       register: example_app
     - debug: var=example_app.stdout
 

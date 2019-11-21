@@ -36,6 +36,7 @@
       pip:
         name:
           - ansible-lint
+          - docker
           - molecule
           - molecule[docker]
 

@@ -37,6 +37,7 @@
         name:
           - ansible-lint
           - molecule
+          - molecule[docker]
 
     - name: Install shellcheck
       become: True

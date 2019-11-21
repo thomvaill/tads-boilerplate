@@ -2,8 +2,8 @@ language: shell
 services:
   - docker
 before_install:
+  - - sudo pip uninstall pyopenssl && sudo pip install -U pyopenssl # fix for molecule
   - ./tads install-dependencies --no-password --force --dev
-  - sudo pip install -U pyopenssl # fix for molecule
 install:
   - ./tads terraform production init
 script:

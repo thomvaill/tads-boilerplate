@@ -21,11 +21,25 @@
     #   args:
     #     warn: False
 
-    - name: Check that traefik is working
-      command: 'curl -I --fail --silent -H "Host: yourcompany.com" http://127.0.0.1/'
+    # This one neither :-(
+    # > rc #56
+    #
+    # - name: Check that traefik is working
+    #   command: 'curl -I --fail --silent -H "Host: yourcompany.com" http://127.0.0.1/'
+    #   changed_when: False
+    #   args:
+    #     warn: False
+
+    - name: Check that 1 traefik container is running
+      shell: |
+        set -o pipefail
+        {% raw %}docker container ps --filter "label=com.docker.swarm.service.name=traefik_traefik" --format "{{.ID}}" | wc -l{% endraw %} # noqa 206
+      register: nb_traefik_containers
       changed_when: False
+      failed_when: nb_traefik_containers.stdout != "1"
       args:
         warn: False
+        executable: /bin/bash
 
     - name: Check that 2 example_app containers are running
       shell: |

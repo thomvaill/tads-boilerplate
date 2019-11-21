@@ -17,7 +17,6 @@ ENV {{ var }} {{ value }}
 # Dependencies
 RUN runDeps=" \
 		python sudo bash ca-certificates iproute2 \
-        curl \
 	" \
     && apt-get update && apt-get install -y --no-install-recommends $runDeps && rm -rf /var/lib/apt/lists/*
 

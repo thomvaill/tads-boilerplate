@@ -175,10 +175,10 @@ First, you probably need to change the `domains` dict in `ansible/group_vars/all
 This file contains all Ansible variables default values. These values can be overriden later in other group_vars files.
 Your are free to add your variables in it.
 
-Then, you can write your own Docker Swarm Compose files, following this naming convention: `ansible/stacks/STACK_NAME/STACK_NAME.yml`
+Then, you can write your own Docker Swarm Compose files, following this naming convention: `ansible/stacks/STACK_NAME/STACK_NAME.yml.j2`
 These files are [Jinja2 templates](https://docs.ansible.com/ansible/latest/user_guide/playbooks_templating.html).
 You are highly encouraged to use Ansible variables in them, so your template file can be used accross all your environements.
-Have a look at `ansible/stacks/example_app/example_app.yml` to see a good example.
+Have a look at `ansible/stacks/example_app/example_app.yml.j2` to see a good example.
 
 Finally, do not forget to add your new stacks to `ansible/deploy.yml`.
 

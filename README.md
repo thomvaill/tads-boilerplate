@@ -65,7 +65,7 @@ If you recognize yourself into some of these statements, this project is definit
 - I am the only one who is able to make changes to the production environement
 - I still have to execute SSH commands in production and I am upset of this because I cannot rollback or be reviewed
 - Setting up a new development environement for a new team member takes an entire day, and a lot of resources
-- My team suffer from "Microservices Hell": I have to install many services before being able to dev
+- My team suffers from "Microservices Hell": I have to install many services before being able to dev
 - Developers use docker-compose on their machine, while we use something else in production
 - I want to do Infrastructure as Code (IaC)
 - I want to promote the DevOps mindset in my team

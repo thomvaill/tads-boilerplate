@@ -12,6 +12,8 @@ This project was bootstrapped with [T.A.D.S. boilerplate](https://github.com/Tho
 ## Installation
 
 ```bash
+git clone <YOUR_PROJECT_GIT_URL>
+cd <YOUR_PROJECT_NAME>
 ./tads install-dependencies
 ```
 
@@ -20,6 +22,8 @@ This project was bootstrapped with [T.A.D.S. boilerplate](https://github.com/Tho
 ## Development environment
 
 ### Commands
+
+The `./tads` executable is a companion CLI which is a wrapper around Ansible, Vagrant and Terraform commands.
 
 ```bash
 ./tads ansible-playbook localhost provision
@@ -35,7 +39,7 @@ This project was bootstrapped with [T.A.D.S. boilerplate](https://github.com/Tho
 
 You should run this command every time you change the configuration of your stacks.
 
-Your application is now accessible on `https://yourcompany.localhost`.
+Your application is now accessible on `https://yourcompany.localhost/`.
 
 ### Bind mounts
 
@@ -45,7 +49,7 @@ To be able to develop locally, you should bind mount your code into your contain
 - Specify the correct paths in it
 - Run `./tads ansible-playbook localhost deploy` to update changes
 
-You can also override some Ansible variables locally doing the same with the `ansible/groups_vars/localhost_overrides.sample.yml` file.
+You can also override some Ansible variables locally doing the same with the `ansible/groups_vars/localhost_overrides.sample.yml` file (useful for credentials and applicative environment variables).
 
 ## Test in a production-like environment with Vagrant
 
@@ -55,7 +59,7 @@ This will deploy your stacks on a 3-nodes production like-environment, locally w
 2. Run `./tads vagrant up`
 3. Run `./tads ansible-playbook vagrant all`
 
-Now, you will be able to test your stacks deployed on Vagrant on `https://yourcompany.test`.
+Now, you will be able to test your stacks deployed on Vagrant on `https://yourcompany.test/`.
 
 **Tips:**
 

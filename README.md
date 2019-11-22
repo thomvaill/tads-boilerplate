@@ -50,7 +50,9 @@ On top of that, it features:
 
 - A companion CLI (`./tads`), which is a wrapper around Terraform, Ansible and Vagrant commands. For example: `ansible-playbook -i inventories/production -D --vault-id production@vault_keys/production deploy.yml` becomes `./tads ansible-playbook production deploy`. More convenient, don't you think? :smirk:
 - Docker Swarm Compose files templated with Jinja2, so you can define your services once, while being able to customize them in each environment, from the same file
-- An example which implements [dockerswarm.rocks' recommended good practices](https://dockerswarm.rocks/): traefik with HTTPS (reverse proxy), and more coming soon
+- An example which implements [dockerswarm.rocks' recommended good practices](https://dockerswarm.rocks/): traefik reverse proxy with HTTPS (even locally), and more coming soon
+- A smart `/etc/hosts` management to access your local and Vagrant applications with `.localhost` and `.test` https URIs
+- AES-256 encryption of your production credentials with ansible-vault
 
 With T.A.D.S., you will be able to onboard a new developer on your project in less than 3 minutes, with just 3 commands! Even if you have a complex microservices architecture. Forget about your outdated wikis or installation procedures, they are no longer needed! See the [example user README](README.example.md) to get a preview of what your new procedures could look like.
 
@@ -158,7 +160,7 @@ The first command will:
 - Hardcode `yourcompany.localhost` to your `/etc/hosts` file
 
 And the second one will deploy `traefik` and `example_app` stacks.
-If everything went well, you are now able to access it at this URL: https://yourcompany.localhost
+If everything went well, you are now able to access it at this URL: https://yourcompany.localhost/
 
 ### 4. Write your own Docker Swarm Compose files
 
@@ -168,7 +170,7 @@ First, you probably need to change the `domains` dict in `ansible/group_vars/all
 This file contains all Ansible variables default values. These values can be overridden later in other group_vars files.
 You are free to add your variables in it.
 
-Then, you can write your own Docker Swarm Compose files, following this naming convention: `ansible/stacks/STACK_NAME/STACK_NAME.yml.j2`
+Then, you can write your own Docker Swarm Compose files, following this naming convention: `ansible/stacks/<STACK_NAME>/<STACK_NAME>.yml.j2`
 These files are [Jinja2 templates](https://docs.ansible.com/ansible/latest/user_guide/playbooks_templating.html).
 You are highly encouraged to use Ansible variables in them, so your template file can be used across all your environments.
 Have a look at `ansible/stacks/example_app/example_app.yml.j2` to see a good example.
@@ -211,7 +213,7 @@ With Vagrant, you will be able to test your stacks on a fresh 3 nodes Swarm clus
 2. Run `./tads vagrant up`
 3. Run `./tads ansible-playbook vagrant all`
 
-Now, you will be able to test your stacks deployed on Vagrant. If you have kept the example app, you can test it on `https://yourcompany.test`.
+Now, you will be able to test your stacks deployed on Vagrant. If you have kept the example app, you can test it on https://yourcompany.test/.
 
 **Tips:**
 

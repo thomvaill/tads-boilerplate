@@ -352,6 +352,14 @@ This might be a future feature to implement this plugin in the boilerplate.
 
 Pull Requests are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
 
+Development:
+
+```bash
+./tads install-dependencies --dev
+make lint
+make test
+```
+
 ## Aknowledgements
 
 - John Patterson for his [ansible-swarm-playbook](https://github.com/nextrevision/ansible-swarm-playbook) and his [article](https://thisendout.com/2016/09/13/deploying-docker-swarm-with-ansible/)

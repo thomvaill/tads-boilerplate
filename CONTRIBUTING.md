@@ -12,6 +12,14 @@ All your contributions are very welcome, whether it's:
 
 Thank you so much! :clap:
 
+## Development
+
+```bash
+./tads install-dependencies --dev
+make lint
+make test
+```
+
 ## Pull Requests
 
 Pull requests are the best way to propose changes to the codebase (we use [Github Flow](https://guides.github.com/introduction/flow/index.html)). We actively welcome your pull requests.
@@ -19,8 +27,8 @@ Pull requests are the best way to propose changes to the codebase (we use [Githu
 1. Fork the repo and create your branch from `master`
 2. If you've added code that should be tested, add tests
 3. Update the documentation
-4. Ensure the test suite passes
-5. Make sure your code lints
+4. Ensure the test suite passes (`make test`)
+5. Make sure your code lints (`make lint`)
 6. Issue that pull request!
 
 ## Issues and Feature Requests

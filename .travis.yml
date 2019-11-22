@@ -12,6 +12,9 @@ jobs:
       name: Lint
       script: make lint
     - stage: test
+      name: Test scripts
+      script: make test-scripts
+    - stage: test
       name: Test Ansible roles
       script: make test-ansible-roles
     - stage: test

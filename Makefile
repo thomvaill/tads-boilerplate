@@ -15,9 +15,9 @@ help: ## This help
 .DEFAULT_GOAL := help
 
 #:## Lint tasks
-lint: lint-bash lint-terraform lint-ansible ## Execute all lint tasks
+lint: lint-scripts lint-terraform lint-ansible ## Execute all lint tasks
 
-lint-bash: ## Perform a shellcheck linting on all scripts
+lint-scripts: ## Perform a shellcheck linting on all scripts
 	shellcheck tads scripts/**/*.sh
 
 lint-terraform: ## Perform a "terraform validate" linting
@@ -27,7 +27,13 @@ lint-ansible: ## Perform an ansible-lint linting
 	ansible-lint ansible/*.yml
 
 #:## Test tasks
-test: test-ansible-roles test-ansible-e2e ## Execute all test tasks
+test: test-scripts test-ansible-roles test-ansible-e2e ## Execute all test tasks
+
+test-scripts: ## Run scripts integration tests
+	./scripts/tests/launcher.sh
+
+test-scripts-watch: ## Run scripts integration tests in watch mode
+	./scripts/tests/watch.sh
 
 test-ansible-roles: ## Test each Ansible role
 	for d in ansible/roles/*; do (cd $${d} && molecule test); done

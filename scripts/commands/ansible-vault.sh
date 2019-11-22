@@ -79,7 +79,7 @@ ansible_vault_cmd() {
         exit 1
     fi
 
-    set -x
+    [[ "${TADS_VERBOSE:-}" == true ]] &&  set -x
     ansible-vault "$@" --vault-id "${environment}@${key_path}"
     set +x
 }

@@ -64,7 +64,7 @@ main () {
     if ! command -v ansible > /dev/null; then
         echo "Your SUDO password may be asked"
 
-        set -x
+        [[ "${TADS_VERBOSE:-}" == true ]] &&  set -x
         sudo apt-get update \
         && sudo apt-get --yes install software-properties-common \
         && sudo apt-add-repository --yes --update ppa:ansible/ansible \

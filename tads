@@ -12,6 +12,12 @@ readonly SELF_NAME="$(basename "${BASH_SOURCE[0]}")"
 # shellcheck source=scripts/includes/common.sh
 source "${SELF_PATH}/scripts/includes/common.sh"
 
+if [[ "${TADS_ENV:-}" == "test" ]]; then
+    export TADS_VERBOSE=false
+else
+    export TADS_VERBOSE=true
+fi
+
 usage() {
     local error_msg=${1:-}
     local cmd="./${SELF_NAME}"

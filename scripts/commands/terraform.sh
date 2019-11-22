@@ -70,7 +70,7 @@ terraform_cmd() {
     local command="$1"
 
     if [[ ! "${command}" == "gen-ansible-inventory" ]]; then
-        set -x
+        [[ "${TADS_VERBOSE:-}" == true ]] &&  set -x
         (cd "${ROOT_PATH}/terraform/environments/${environment}"; terraform "$@")
         set +x
     fi

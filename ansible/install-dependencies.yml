@@ -7,7 +7,7 @@
 
 - hosts: localhost
   tasks:
-    - name: Install Vagrant and Virtualbox
+    - name: Install Vagrant, Virtualbox and other dependencies
       become: yes
       package:
         name: "{{ item }}"
@@ -15,6 +15,7 @@
       with_items:
         - virtualbox
         - vagrant
+        - jq
 
     - name: Install Terraform
       shell: >

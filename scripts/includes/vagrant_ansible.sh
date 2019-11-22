@@ -15,7 +15,7 @@ vagrant_ansible_playbook () {
 
     vagrant_ansible_checks
 
-    set -x
+    [[ "${TADS_VERBOSE:-}" == true ]] &&  set -x
     ansible-playbook -i "${vagrant_inventory_path}" -D "$@"
     set +x
 }
@@ -25,7 +25,7 @@ vagrant_ansible () {
 
     vagrant_ansible_checks
 
-    set -x
+    [[ "${TADS_VERBOSE:-}" == true ]] &&  set -x
     ansible -i "${vagrant_inventory_path}" -D "$@"
     set +x
 }

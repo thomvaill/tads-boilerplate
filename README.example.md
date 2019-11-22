@@ -39,7 +39,7 @@ The `./tads` executable is a companion CLI which is a wrapper around Ansible, Va
 
 You should run this command every time you change the configuration of your stacks.
 
-Your application is now accessible on `https://yourcompany.localhost/`.
+Your application is now accessible on https://yourcompany.localhost/
 
 ### Bind mounts
 
@@ -59,7 +59,7 @@ This will deploy your stacks on a 3-nodes production like-environment, locally w
 2. Run `./tads vagrant up`
 3. Run `./tads ansible-playbook vagrant all`
 
-Now, you will be able to test your stacks deployed on Vagrant on `https://yourcompany.test/`.
+Now, you will be able to test your stacks deployed on Vagrant on https://yourcompany.test/
 
 **Tips:**
 

@@ -213,7 +213,7 @@ With Vagrant, you will be able to test your stacks on a fresh 3 nodes Swarm clus
 2. Run `./tads vagrant up`
 3. Run `./tads ansible-playbook vagrant all`
 
-Now, you will be able to test your stacks deployed on Vagrant. If you have kept the example app, you can test it on https://yourcompany.test/.
+Now, you will be able to test your stacks deployed on Vagrant. If you have kept the example app, you can test it on https://yourcompany.test/
 
 **Tips:**
 

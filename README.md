@@ -12,9 +12,8 @@
 - [:tada: What is it?](#tada-what-is-it)
 - [:dart: Who is it for?](#dart-who-is-it-for)
 - [:muscle: Philosophy](#muscle-philosophy)
-- [:lock: Prerequisites](#lock-prerequisites)
-  - [Knowledge and practice](#knowledge-and-practice)
-  - [Technical](#technical)
+- [:lock: Knowledge prerequisites](#lock-knowledge-prerequisites)
+- [:lock: Technical prerequisites](#lock-technical-prerequisites)
 - [:rocket: Quick start](#rocket-quick-start)
   - [1. Make this repository yours](#1-make-this-repository-yours)
   - [2. Install the required dependencies](#2-install-the-required-dependencies)
@@ -35,24 +34,25 @@
 
 A boilerplate to create a full Infrastructure as Code (IaC) repository, from provisioning to deployment with:
 
-- Terraform to create cloud infrastructure
-- Vagrant to reproduce a production-like environment locally
-- Ansible to provision Virtual Machines and set up the Docker Swarm cluster
-- Ansible again to deploy your stacks
+- **Terraform** to create your cloud infrastructure
+- **Vagrant** to reproduce a production-like environment locally
+- **Ansible** to provision Virtual Machines and set up the **Docker Swarm** cluster
+- **Ansible** again to deploy your stacks
 
 It handles different environments:
 
 - `localhost`: a single node Docker Swarm cluster on your machine, useful for development ([demo](https://asciinema.org/a/282625))
 - `vagrant`: a 3 nodes production-like cluster deployed with Vagrant on your machine, useful for testing ([demo](https://asciinema.org/a/282636))
-- `production`: the production :-) It can be created by Terraform or you can use an existing bare metal/VMs infrastructure ([demo](https://asciinema.org/a/282640))
+- `production`: your production environment! It can be created by Terraform or you can use an existing bare metal/VMs infrastructure ([demo](https://asciinema.org/a/282640))
 - other remote production-like environments of your choice: staging, qa...
 
 On top of that, it features:
 
-- A companion CLI (`./tads`), which is basically a wrapper of Terraform, Ansible and Vagrant commands. For example: `ansible-playbook -i inventories/production -D --vault-id production@vault_keys/production deploy.yml` becomes `./tads ansible-playbook production deploy` :-)
-- Templated Docker Swarm Compose files with Jinja2, so you can define your services once, while being able to customize them according to the environment
+- A companion CLI (`./tads`), which is basically a wrapper around Terraform, Ansible and Vagrant commands. For example: `ansible-playbook -i inventories/production -D --vault-id production@vault_keys/production deploy.yml` becomes `./tads ansible-playbook production deploy` :smirk:
+- Docker Swarm Compose files templated with Jinja2, so you can define your services once, while being able to customize them in each environment, from the same file
+- An example which implements [dockerswarm.rocks' recommended good practices](https://dockerswarm.rocks/): traefik with HTTPS (reverse proxy), and more coming soon
 
-With T.A.D.S., you will be able to onboard a new developer on your project in 02:30, with just 3 commands! No more outdated wikis or installation procedures. Even if you have a complex microservices architecture.
+With T.A.D.S., you will be able to onboard a new developer on your project in less than 3 minutes, with just 3 commands! Even if you have a complex microservices architecture. Forget about your outdated wikis or installation procedures, they are no longer needed! See the [example user README](README.example.md) to get a preview of what your new procedures could look like.
 
 [![Example of a fresh development environment setup with T.A.D.S. in 02:30!](https://asciinema.org/a/282625.svg)](https://asciinema.org/a/282625)
 <div align="center"><sub>Example of a fresh development environment setup with T.A.D.S. in 02:30!</sub></div>
@@ -61,17 +61,16 @@ With T.A.D.S., you will be able to onboard a new developer on your project in 02
 
 If you recognize yourself into some of these statements, this project is definitely for you:
 
-- I am the only one who understands how the production environment is designed
-- I am the only one who is able to make changes to the production environment
+- I am the only one who understands how the production environment works
 - I still have to execute SSH commands in production and I am upset of this because I cannot rollback or be reviewed
 - Setting up a new development environment for a new team member takes an entire day, and a lot of resources
-- My team suffers from "Microservices Hell": I have to install many services before being able to dev
+- My team suffers from "Microservices Hell": we have to install many services before being able to dev
 - Developers use docker-compose on their machine, while we use something else in production
 - I want to do Infrastructure as Code (IaC)
 - I want to promote the DevOps mindset in my team
 - I don't need/want Kubernetes features and complexity
 - I don't want to be vendor locked by a service like AWS ECS
-- I start a new project and I want to bootstrap it quickly
+- I start a new project and I want to bootstrap it quickly with good practices presets
 
 On the contrary, this project might not be for you if:
 
@@ -83,7 +82,7 @@ On the contrary, this project might not be for you if:
 ## :muscle: Philosophy
 
 - Every environment infrastructure, including dev, is versioned into one repository
-- Same development environment for everyone
+- Same development environment installation procedure for everyone
 - No SSH, no manual actions, everything must be code
 - Every change to infrastructure must be code reviewed, in order to:
   - Avoid mistakes
@@ -96,9 +95,7 @@ On the contrary, this project might not be for you if:
 - This project is a boilerplate, not a framework: modify it to fulfill your needs!
 - The companion CLI is written in Bash so it is easy to understand what a command does, and it is easy to modify command behaviors or to add new ones
 
-## :lock: Prerequisites
-
-### Knowledge and practice
+## :lock: Knowledge prerequisites
 
 Before going further, I assume that you already have knowledge **and practice** with Docker Swarm mode, Ansible, Terraform, and Infrastructure as Code in general.
 If it is not the case, I urge you to study and practice **before**. You can use this material as a starter:
@@ -107,24 +104,22 @@ If it is not the case, I urge you to study and practice **before**. You can use 
 - [Ansible Quickstart guide](https://docs.ansible.com/ansible/latest/user_guide/quickstart.html)
 - [Terraform getting started](https://learn.hashicorp.com/terraform/getting-started/install.html)
 
-### Technical
+## :lock: Technical prerequisites
 
-For the moment, the project has only been tested on Ubuntu 18.04, but it might be compatible with other Ubuntu versions and Linux distros. Feel free to open a PR to update this list after a successful test.
-
-Moreover, it should not be that hard to make the project run on OS X. PRs are welcome! I am also thinking of creating a Dockerized version of the project. PRs are welcome, again.
-
-- Local machine:
-  - Ubuntu >= 18.04
+- **Local machine**:
+  - Ubuntu >= 18.04 or similar (PRs are welcome to update this list)
   - Ansible >= 2.8
   - Vagrant >= 2.0 *(optional)*
   - Virtualbox >= 5.2 *(optional)*
   - Terraform >= 0.12 *(optional)*
-- Remote environments:
+- **Remote environments**:
   - A cloud provider account (tested on AWS and Digital Ocean so far)
   - ***OR***
   - An existing bare metal / VMs infrastructure, with Linux based OSes (tested on Ubuntu server 18.04 and Debian 9 so far)
 
 Have a look at [Install the required dependencies](#2-install-the-required-dependencies) for installation procedures.
+
+**OS X:** It should not be that hard to make the project run on OS X. PRs are welcome! I am also thinking of creating a dockerized version of the project to improve compatibility.
 
 ## :rocket: Quick start
 
@@ -148,8 +143,6 @@ This will install Ansible, Vagrant, Virtualbox and Terraform on your local machi
 ```
 
 You can also manually install the dependencies if your preferer.
-
-**Tip:** if you want to install dev dependencies as well (ansible-lint, shellcheck...), add `--dev` option.
 
 ### 3. Provision your local machine and deploy the example stack
 
@@ -316,7 +309,7 @@ Finally, provision and deploy! `./tads ansible-playbook staging all`
 It is one of this project's goals: DevOps is not a job, it is a mindset!
 Now that you have a beautiful IaC, it is time to onboard your team members.
 
-1. Customize this `README.md`: make it yours
+1. Replace this `README.md` by `README.example.md` and customize it, so your team can use the project easily
 2. Make your developers use this project to configure their machine and develop
 3. Let your developers update/create stacks on their own, show them how to test their changes locally
 4. Enjoy :-)
@@ -350,7 +343,7 @@ This might be a future feature to implement this plugin in the boilerplate.
 
 ## Contributing
 
-Pull Requests are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
+Pull Requests are more than welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
 
 Development:
 

@@ -42,3 +42,5 @@
         user: "{{ ansible_user }}"
         key: "{{ item }}"
       with_items: "{{ docker_authorized_ssh_keys }}"
+
+    # ADD YOUR OWN TASKS HERE

@@ -21,10 +21,10 @@
   - [3. Provision your local machine and deploy the example stack](#3-provision-your-local-machine-and-deploy-the-example-stack)
   - [4. Write your own Docker Swarm Compose files](#4-write-your-own-docker-swarm-compose-files)
   - [5. Test on a Vagrant cluster](#5-test-on-a-vagrant-cluster)
-  - [6. Edit and encrypt your production environement variables](#6-edit-and-encrypt-your-production-environement-variables)
-  - [7.a. Create, provision and deploy your production environement with Terraform](#7a-create-provision-and-deploy-your-production-environement-with-terraform)
-  - [7.b. Provision and deploy your production environement to an existing infrastructure](#7b-provision-and-deploy-your-production-environement-to-an-existing-infrastructure)
-  - [8. Add other remote environements](#8-add-other-remote-environements)
+  - [6. Edit and encrypt your production environment variables](#6-edit-and-encrypt-your-production-environment-variables)
+  - [7.a. Create, provision and deploy your production environment with Terraform](#7a-create-provision-and-deploy-your-production-environment-with-terraform)
+  - [7.b. Provision and deploy your production environment to an existing infrastructure](#7b-provision-and-deploy-your-production-environment-to-an-existing-infrastructure)
+  - [8. Add other remote environments](#8-add-other-remote-environments)
   - [9. Make your team members autonomous](#9-make-your-team-members-autonomous)
 - [:question: FAQ](#question-faq)
 - [Contributing](#contributing)
@@ -36,21 +36,21 @@
 A boilerplate to create a full Infrastructure as Code (IaC) repository, from provisioning to deployment with:
 
 - Terraform to create cloud infrastructure
-- Vagrant to reproduce a production-like environement locally
+- Vagrant to reproduce a production-like environment locally
 - Ansible to provision Virtual Machines and set up the Docker Swarm cluster
 - Ansible again to deploy your stacks
 
-It handles different environements:
+It handles different environments:
 
 - `localhost`: a single node Docker Swarm cluster on your machine, useful for development ([demo](https://asciinema.org/a/282625))
 - `vagrant`: a 3 nodes production-like cluster deployed with Vagrant on your machine, useful for testing ([demo](https://asciinema.org/a/282636))
 - `production`: the production :-) It can be created by Terraform or you can use an existing bare metal/VMs infrastructure ([demo](https://asciinema.org/a/282640))
-- other remote production-like environements of your choice: staging, qa...
+- other remote production-like environments of your choice: staging, qa...
 
 On top of that, it features:
 
 - A companion CLI (`./tads`), which is basically a wrapper of Terraform, Ansible and Vagrant commands. For example: `ansible-playbook -i inventories/production -D --vault-id production@vault_keys/production deploy.yml` becomes `./tads ansible-playbook production deploy` :-)
-- Templated Docker Swarm Compose files with Jinja2, so you can define your services once, while being able to customize them according to the environement
+- Templated Docker Swarm Compose files with Jinja2, so you can define your services once, while being able to customize them according to the environment
 
 With T.A.D.S., you will be able to onboard a new developer on your project in 02:30, with just 3 commands! No more outdated wikis or installation procedures. Even if you have a complex microservices architecture.
 
@@ -61,10 +61,10 @@ With T.A.D.S., you will be able to onboard a new developer on your project in 02
 
 If you recognize yourself into some of these statements, this project is definitely for you:
 
-- I am the only one who understands how the production environement is designed
-- I am the only one who is able to make changes to the production environement
+- I am the only one who understands how the production environment is designed
+- I am the only one who is able to make changes to the production environment
 - I still have to execute SSH commands in production and I am upset of this because I cannot rollback or be reviewed
-- Setting up a new development environement for a new team member takes an entire day, and a lot of resources
+- Setting up a new development environment for a new team member takes an entire day, and a lot of resources
 - My team suffers from "Microservices Hell": I have to install many services before being able to dev
 - Developers use docker-compose on their machine, while we use something else in production
 - I want to do Infrastructure as Code (IaC)
@@ -89,7 +89,7 @@ On the contrary, this project might not be for you if:
   - Avoid mistakes
   - Make other (including non-DevOps) team members able to learn
 - Everyone, not only DevOps team members, is able to:
-  - Create their development environement in a minute with just one command
+  - Create their development environment in a minute with just one command
   - Reproduce a production-like environment locally
   - Understand the whole infrastructure
   - Propose modifications to the infrastructure, while being able to test them locally
@@ -177,7 +177,7 @@ Your are free to add your variables in it.
 
 Then, you can write your own Docker Swarm Compose files, following this naming convention: `ansible/stacks/STACK_NAME/STACK_NAME.yml.j2`
 These files are [Jinja2 templates](https://docs.ansible.com/ansible/latest/user_guide/playbooks_templating.html).
-You are highly encouraged to use Ansible variables in them, so your template file can be used accross all your environements.
+You are highly encouraged to use Ansible variables in them, so your template file can be used accross all your environments.
 Have a look at `ansible/stacks/example_app/example_app.yml.j2` to see a good example.
 
 Finally, do not forget to add your new stacks to `ansible/deploy.yml`.
@@ -191,7 +191,7 @@ all
 |   └── vagrant
 ├── production
 ├── staging
-└── any_other_remote_environement...
+└── any_other_remote_environment...
 ```
 
 Each group has its `_overrides` counterpart, which enables you to override some variables locally in a `xxx_overrides.yml` file,
@@ -209,8 +209,8 @@ Do not forget to run `./tads ansible-playbook localhost provision` again if you 
 
 ### 5. Test on a Vagrant cluster
 
-Now that your are happy with your localhost environement, you should test the provisioning and the deployment
-on an environement which looks more like a production environement.
+Now that your are happy with your localhost environment, you should test the provisioning and the deployment
+on an environment which looks more like a production environment.
 For instance, on localhost you can have just one node! And maybe your forgot some dependencies that are already installed on your computer.
 With Vagrant, you will be able to test your stacks on a fresh 3 nodes Swarm cluster.
 
@@ -225,7 +225,7 @@ Now, you will be able to test your stacks deployed on Vagrant. If you have kept 
 - To destroy your cluster: `./tads vagrant destroy`
 - To SSH into the first node: `./tads vagrant ssh vagrant-1`
   
-### 6. Edit and encrypt your production environement variables
+### 6. Edit and encrypt your production environment variables
 
 Before going further, you should edit your production group_vars files:
 
@@ -244,9 +244,9 @@ with AES-256. You can now commit it.
 
 You can still edit this file by running `./tads ansible-vault production edit ansible/group_vars/production_encrypted.yml`. Always check that you do not commit a unencrypted version of this file by mistake.
 
-### 7.a. Create, provision and deploy your production environement with Terraform
+### 7.a. Create, provision and deploy your production environment with Terraform
 
-Now that everything is fine locally, it is time to create and deploy your production environement!
+Now that everything is fine locally, it is time to create and deploy your production environment!
 
 The `terraform/environments/production` is an AWS example. PRs are welcome for other providers!
 To make it work, you should:
@@ -279,10 +279,10 @@ Finally, you can run `./tads ansible-playbook production all` and your website w
 - Although resources created by the example are eligible to free tier, charges may occur depending on your situation
 - Use `./tads terraform production destroy` with caution :-)
 
-### 7.b. Provision and deploy your production environement to an existing infrastructure
+### 7.b. Provision and deploy your production environment to an existing infrastructure
 
 If you don't want to use a cloud provider, you can use classic Virtual Machines.
-For a production environement, you should have at least 3 manager nodes, so 3 VMs.
+For a production environment, you should have at least 3 manager nodes, so 3 VMs.
 They should be fresh installs. Ubuntu server 18.04 or Debian 9 is fine.
 
 1. Make sure you can SSH into the VMs with your key pair
@@ -290,9 +290,9 @@ They should be fresh installs. Ubuntu server 18.04 or Debian 9 is fine.
 3. Edit it
 4. Run `./tads ansible-playbook production all` and your website will be available!
 
-### 8. Add other remote environements
+### 8. Add other remote environments
 
-You can add other remote environements, like production.
+You can add other remote environments, like production.
 
 For Terraform, you just have to duplicate `terraform/environments/production` to the directory of your choice, eg `staging`.
 After editing it, you can run `./tads terraform staging apply`, it will create the `ansible/inventories/staging` inventory file.

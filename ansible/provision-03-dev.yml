@@ -2,7 +2,7 @@
 ###
 # provision-03-dev playbook
 ##
-# Update /etc/hosts of local machine for localhost and vagrant environements
+# Update /etc/hosts of local machine for localhost and vagrant environments
 ##
 
 - hosts: vagrant

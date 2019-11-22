@@ -5,7 +5,7 @@ readonly TADS_MIN_ANSIBLE_VERSION="2.8"
 # Global Ansible config
 export ANSIBLE_DEPRECATION_WARNINGS="False"
 
-get_ansible_remote_environements () {
+get_ansible_remote_environments () {
     ls -1 -I "localhost" -I "*.sample*" "${ROOT_PATH}/ansible/inventories"
 }
 

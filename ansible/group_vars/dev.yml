@@ -1,13 +1,13 @@
 ---
 ###
-# local environements variables
+# local environments variables
 ##
-# This group applies to local environements (localhost and vagrant)
+# This group applies to local environments (localhost and vagrant)
 #
 # You may override some variables from all.yml here...
 ##
 
-# We can't use ACME in local environements
+# We can't use ACME in local environments
 # Traefik's self signed certificate will be used
 letsencrypt: False
 

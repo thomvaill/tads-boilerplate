@@ -1,6 +1,6 @@
 ---
 ###
-# localhost environement bind mounts
+# localhost environment bind mounts
 ##
 # This file should be copied to "localhost_bindmounts.yml" and be customized for this specific machine
 # It must not be versionned

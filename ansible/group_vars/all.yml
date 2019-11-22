@@ -12,7 +12,7 @@
 #  |   └── vagrant
 #  ├── production
 #  ├── staging
-#  └── any_other_remote_environement...
+#  └── any_other_remote_environment...
 #
 # Each group has its "_overrides" counterpart, which enables you to override
 #  some variables locally in a xxx_overrides.yml file, which is not versionned

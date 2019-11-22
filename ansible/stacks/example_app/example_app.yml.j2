@@ -27,7 +27,7 @@ services:
   helloworld:
     image: nginxdemos/hello:0.2 # always use tags!
     environment:
-      EXAMPLE_USERNAME: {{ credentials.example_app.username }} # it's easy to set environement vars from group_vars
+      EXAMPLE_USERNAME: {{ credentials.example_app.username }} # it's easy to set environment vars from group_vars
       EXAMPLE_PASSWORD_FILE: /run/secrets/example_app_password-v1
     networks:
       - apps

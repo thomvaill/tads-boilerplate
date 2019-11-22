@@ -20,7 +20,7 @@ usage() {
     local cmd="./tads"
 
     local environments
-    environments="$(get_ansible_remote_environements | awk '{ print "    " $1 }')"
+    environments="$(get_ansible_remote_environments | awk '{ print "    " $1 }')"
 
     cat <<- EOF
 

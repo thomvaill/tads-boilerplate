@@ -1,11 +1,11 @@
 ---
 ###
-# local environements overrides
+# local environments overrides
 ##
 # This file should be copied to "dev_overrides.yml" and be customized for this specific machine
 # It must not be versionned
 #
-# This group applies to local environements (localhost and vagrant)
+# This group applies to local environments (localhost and vagrant)
 #
 # You may override some variables from all.yml here...
 ##

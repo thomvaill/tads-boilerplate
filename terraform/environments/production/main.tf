@@ -3,7 +3,7 @@
 ##
 
 # Do not hardcode credentials here
-# Use environement variables or AWS CLI profile
+# Use environment variables or AWS CLI profile
 provider "aws" {
   version = "~> 2.36"
   region  = "us-east-1"

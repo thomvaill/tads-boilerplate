@@ -1,5 +1,5 @@
 ###
-# production environement inventory file EXAMPLE
+# production environment inventory file EXAMPLE
 ##
 # This example should be used if you don't use Terraform,
 #  ie. you have an existing bare metal/VM infrastructure.

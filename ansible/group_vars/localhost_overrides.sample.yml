@@ -1,6 +1,6 @@
 ---
 ###
-# localhost environement overrides
+# localhost environment overrides
 ##
 # This file should be copied to "localhost_overrides.yml" and be customized for this specific machine
 # It must not be versionned

@@ -27,7 +27,7 @@
   - [9. Make your team members autonomous](#9-make-your-team-members-autonomous)
 - [:question: FAQ](#question-faq)
 - [Contributing](#contributing)
-- [Aknowledgements](#aknowledgements)
+- [Acknowledgments](#acknowledgments)
 - [License](#license)
 
 ## :tada: What is it?
@@ -44,11 +44,11 @@ It handles different environments:
 - `localhost`: a single node Docker Swarm cluster on your machine, useful for development ([demo](https://asciinema.org/a/282625))
 - `vagrant`: a 3 nodes production-like cluster deployed with Vagrant on your machine, useful for testing ([demo](https://asciinema.org/a/282636))
 - `production`: your production environment! It can be created by Terraform or you can use an existing bare metal/VMs infrastructure ([demo](https://asciinema.org/a/282640))
-- other remote production-like environments of your choice: staging, qa...
+- other remote production-like environments of your choice: staging, QA...
 
 On top of that, it features:
 
-- A companion CLI (`./tads`), which is basically a wrapper around Terraform, Ansible and Vagrant commands. For example: `ansible-playbook -i inventories/production -D --vault-id production@vault_keys/production deploy.yml` becomes `./tads ansible-playbook production deploy` :smirk:
+- A companion CLI (`./tads`), which is a wrapper around Terraform, Ansible and Vagrant commands. For example: `ansible-playbook -i inventories/production -D --vault-id production@vault_keys/production deploy.yml` becomes `./tads ansible-playbook production deploy`. More convenient, don't you think? :smirk:
 - Docker Swarm Compose files templated with Jinja2, so you can define your services once, while being able to customize them in each environment, from the same file
 - An example which implements [dockerswarm.rocks' recommended good practices](https://dockerswarm.rocks/): traefik with HTTPS (reverse proxy), and more coming soon
 
@@ -62,7 +62,7 @@ With T.A.D.S., you will be able to onboard a new developer on your project in le
 If you recognize yourself into some of these statements, this project is definitely for you:
 
 - I am the only one who understands how the production environment works
-- I still have to execute SSH commands in production and I am upset of this because I cannot rollback or be reviewed
+- I still have to execute SSH commands in production and this makes me sad because I cannot rollback or be reviewed :(
 - Setting up a new development environment for a new team member takes an entire day, and a lot of resources
 - My team suffers from "Microservices Hell": we have to install many services before being able to dev
 - Developers use docker-compose on their machine, while we use something else in production
@@ -84,7 +84,7 @@ On the contrary, this project might not be for you if:
 - Every environment infrastructure, including dev, is versioned into one repository
 - Same development environment installation procedure for everyone
 - No SSH, no manual actions, everything must be code
-- Every change to infrastructure must be code reviewed, in order to:
+- Every change to infrastructure must be code reviewed to:
   - Avoid mistakes
   - Make other (including non-DevOps) team members able to learn
 - Everyone, not only DevOps team members, is able to:
@@ -97,7 +97,7 @@ On the contrary, this project might not be for you if:
 
 ## :lock: Knowledge prerequisites
 
-Before going further, I assume that you already have knowledge **and practice** with Docker Swarm mode, Ansible, Terraform, and Infrastructure as Code in general.
+Before going further, I assume that you already have the knowledge **and practice** with Docker Swarm mode, Ansible, Terraform, and Infrastructure as Code in general.
 If it is not the case, I urge you to study and practice **before**. You can use this material as a starter:
 
 - [Getting started with swarm mode](https://docs.docker.com/engine/swarm/swarm-tutorial/) and [Docker Swarm Rocks](https://dockerswarm.rocks/)
@@ -165,12 +165,12 @@ If everything went well, you are now able to access it at this URL: https://your
 Now that the example stack is running on your machine, you can deploy your own services.
 
 First, you probably need to change the `domains` dict in `ansible/group_vars/all.yml`.
-This file contains all Ansible variables default values. These values can be overriden later in other group_vars files.
-Your are free to add your variables in it.
+This file contains all Ansible variables default values. These values can be overridden later in other group_vars files.
+You are free to add your variables in it.
 
 Then, you can write your own Docker Swarm Compose files, following this naming convention: `ansible/stacks/STACK_NAME/STACK_NAME.yml.j2`
 These files are [Jinja2 templates](https://docs.ansible.com/ansible/latest/user_guide/playbooks_templating.html).
-You are highly encouraged to use Ansible variables in them, so your template file can be used accross all your environments.
+You are highly encouraged to use Ansible variables in them, so your template file can be used across all your environments.
 Have a look at `ansible/stacks/example_app/example_app.yml.j2` to see a good example.
 
 Finally, do not forget to add your new stacks to `ansible/deploy.yml`.
@@ -202,9 +202,9 @@ Do not forget to run `./tads ansible-playbook localhost provision` again if you 
 
 ### 5. Test on a Vagrant cluster
 
-Now that your are happy with your localhost environment, you should test the provisioning and the deployment
+Now that you are happy with your localhost environment, you should test the provisioning and the deployment
 on an environment which looks more like a production environment.
-For instance, on localhost you can have just one node! And maybe your forgot some dependencies that are already installed on your computer.
+For instance, on localhost, you can have just one node! And maybe you forgot some dependencies that are already installed on your computer.
 With Vagrant, you will be able to test your stacks on a fresh 3 nodes Swarm cluster.
 
 1. Copy `vagrant/vagrant.sample.yml` to `vagrant/vagrant.yml` and adjust its settings
@@ -232,10 +232,10 @@ When you are done, **do not commit `production_encrypted.yml`**! You have to enc
 
 The first command has generated a random key in `ansible/vault_keys/production`.
 You must not commit this file. You should keep it in a safe place, and share it with your authorized team members securely.
-If you loose it, you won't be able to decrypt your files anymore. The second one has encrypted your file
+If you lose it, you won't be able to decrypt your files anymore. The second one has encrypted your file
 with AES-256. You can now commit it.
 
-You can still edit this file by running `./tads ansible-vault production edit ansible/group_vars/production_encrypted.yml`. Always check that you do not commit a unencrypted version of this file by mistake.
+You can still edit this file by running `./tads ansible-vault production edit ansible/group_vars/production_encrypted.yml`. Always check that you do not commit an unencrypted version of this file by mistake.
 
 ### 7.a. Create, provision and deploy your production environment with Terraform
 
@@ -266,7 +266,7 @@ Then, you have to [create an alias in Route53 to the ELB](https://docs.aws.amazo
 
 Finally, you can run `./tads ansible-playbook production all` and your website will be available!
 
-**Disclamer:**
+**Disclaimer:**
 
 - This is an example, you should not use it as is in production!
 - Although resources created by the example are eligible to free tier, charges may occur depending on your situation
@@ -318,14 +318,14 @@ Now that you have a beautiful IaC, it is time to onboard your team members.
 
 ### Where is the companion CLI documentation? <!-- omit in toc -->
 
-There is no documentation of the CLI, since you will probably modify it, or add new commands!
+There is no documentation of the CLI since you will probably modify it, or add new commands!
 To get some help, just run `./tads`. Do not hesitate also to have a look at the source into the `scripts` directory. This CLI is just a wrapper of Terraform, Ansible and Vagrant commands.
 
 ### What if I don't want to deploy all the stacks locally? <!-- omit in toc -->
 
 Use Ansible tags! Example if you just want to deploy the `traefik` and `myapp` stack: `./tads ansible-playbook localhost deploy --tags stack-traefik,stack-myapp`.
 
-### How to do Continuous Delivery / Deployement? <!-- omit in toc -->
+### How to do Continuous Delivery / Deployment? <!-- omit in toc -->
 
 I have not taken the time to develop this feature properly yet. But basically what you can do is:
 
@@ -353,7 +353,7 @@ make lint
 make test
 ```
 
-## Aknowledgements
+## Acknowledgments
 
 - John Patterson for his [ansible-swarm-playbook](https://github.com/nextrevision/ansible-swarm-playbook) and his [article](https://thisendout.com/2016/09/13/deploying-docker-swarm-with-ansible/)
 - Jeff Geerling for his [pip](https://github.com/geerlingguy/ansible-role-pip) and [docker](https://github.com/geerlingguy/ansible-role-docker) Ansible roles

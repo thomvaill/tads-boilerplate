@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 ##
 # This Ansible Python module is used by provision-02-docker-swarm.yml
-#  to setup the Swarm cluster
+#  to set up the Swarm cluster
 ##
 #
 # Source: https://github.com/nextrevision/ansible-swarm-playbook/blob/master/library/docker_info_facts

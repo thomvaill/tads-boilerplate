@@ -3,7 +3,7 @@
 # Variables default values
 ##
 # We recommend to use production values here
-# These variables can be overriden later in other group_vars files
+# These variables can be overridden later in other group_vars files
 #
 # Here is the Ansible groups structure:
 #  all

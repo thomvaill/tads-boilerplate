@@ -3,7 +3,7 @@
 This repository implements [Infrastructure as Code](https://en.wikipedia.org/wiki/Infrastructure_as_code), and more globally the DevOps mindset.
 It includes all the configuration and all the scripts needed to deploy YourCompany stacks either locally or remotely.
 This repository should be considered as a single source of truth.
-You should also use this repository to setup your development environment.
+You should also use this repository to set up your development environment.
 
 This project heavily uses Ansible. If you are not familiar with it, you should read the [Ansible Quickstart guide](https://docs.ansible.com/ansible/latest/user_guide/quickstart.html) before getting started.
 
@@ -15,7 +15,7 @@ This project was bootstrapped with [T.A.D.S. boilerplate](https://github.com/Tho
 ./tads install-dependencies
 ```
 
-... this will install project dependencies: Ansible, Vagrant, Virtualbox and Terraform.
+... this will install project dependencies: Ansible, Vagrant, Virtualbox, and Terraform.
 
 ## Development environment
 
@@ -25,7 +25,7 @@ This project was bootstrapped with [T.A.D.S. boilerplate](https://github.com/Tho
 ./tads ansible-playbook localhost provision
 ```
 
-... this will configure your local machine to be able to run YourCompany stacks: it will install Docker and setup a Swarm cluster with one node: your localhost.
+... this will configure your local machine to be able to run YourCompany stacks: it will install Docker and set up a Swarm cluster with one node: your localhost.
 
 ```bash
 ./tads ansible-playbook localhost deploy
@@ -33,7 +33,7 @@ This project was bootstrapped with [T.A.D.S. boilerplate](https://github.com/Tho
 
 ... this will deploy all YourCompany's stacks. To deploy only specific stacks, use `--tags` option. Example: `./tads ansible-playbook localhost deploy --tags stack-traefik,stack-XXX`.
 
-You should run this command everytime you change your stacks configuration.
+You should run this command every time you change the configuration of your stacks.
 
 Your application is now accessible on `https://yourcompany.localhost`.
 

@@ -44,7 +44,7 @@ vagrant_cmd() {
     fi
 
     local current_vagrant_version
-    current_vagrant_version="$(vagrant --version | head -n1 | cut -d " " -f2)"
+    current_vagrant_version="$(vagrant --version | head -n1 | cut -d " " -f2 || true)"
 
     if ! is_version_gte "${current_vagrant_version}" "${TADS_MIN_VAGRANT_VERSION}"; then
         echo_red "Your Vagrant version (${current_vagrant_version}) is not supported by T.A.D.S."
@@ -62,7 +62,7 @@ vagrant_cmd() {
         exit 1
     fi
 
-    set -x
+    [[ "${TADS_VERBOSE:-}" == true ]] &&  set -x
     (cd "${ROOT_PATH}/vagrant"; vagrant "$@")
     set +x
 }

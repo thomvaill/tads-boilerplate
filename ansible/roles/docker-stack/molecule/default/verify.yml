@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Check that simple_stack is deployed
+      command: "docker service inspect simple_stack_helloworld"
+      changed_when: False
+
+    - name: Check that stack_with_secrets is deployed
+      command: "docker service inspect stack_with_secrets_helloworld"
+      changed_when: False
+
+    - name: Check that secret 1 and 2 exist
+      command: "docker secret inspect {{ item }}"
+      with_items:
+        - secret1
+        - secret2
+      changed_when: False
+
+    - name: Check that stack_with_resources is deployed
+      command: "docker service inspect stack_with_resources_helloworld"
+      changed_when: False
+
+    - name: Check that example_app_config exists
+      command: "docker config inspect stack_with_resources_example_app_config"
+      changed_when: False

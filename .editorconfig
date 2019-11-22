@@ -20,7 +20,7 @@ indent_size = 2
 [*.tf]
 indent_size = 2
 
-[*.{yml,yaml}]
+[*.{yml,yaml,yml.j2,yaml.j2}]
 indent_size = 2
 
 [*.js]

@@ -1,0 +1,32 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: ./requirements.yml
+driver:
+  name: docker
+lint:
+  name: yamllint
+platforms:
+  - name: instance
+    image: ubuntu:18.04
+    privileged: True
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    groups:
+      - docker
+      - dockerswarm_manager
+      - test
+provisioner:
+  name: ansible
+  inventory:
+    group_vars:
+      docker:
+        dockerswarm_iface: lo
+        swarm_dev_ip: 127.0.0.1
+  lint:
+    name: ansible-lint
+verifier:
+  name: ansible
+  lint:
+    name: ansible-lint

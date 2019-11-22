@@ -7,7 +7,7 @@
 
 - hosts: localhost
   tasks:
-    - name: Install Vagrant and Virtualbox
+    - name: Install Vagrant, Virtualbox and other dependencies
       become: yes
       package:
         name: "{{ item }}"
@@ -15,6 +15,7 @@
       with_items:
         - virtualbox
         - vagrant
+        - jq
 
     - name: Install Terraform
       shell: >
@@ -31,10 +32,14 @@
   tags:
     - dev_dependencies
   tasks:
-    - name: Install ansible-lint
+    - name: Install ansible-lint and molecule
       become: True
       pip:
-        name: ansible-lint
+        name:
+          - ansible-lint
+          - docker
+          - molecule
+          - molecule[docker]
 
     - name: Install shellcheck
       become: True

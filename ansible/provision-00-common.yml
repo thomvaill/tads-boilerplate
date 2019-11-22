@@ -10,7 +10,7 @@
 #  are not yet in your ~/.ssh/known_hosts file
 #
 # Vagrant and Remote environments
-- hosts: docker:!localhost
+- hosts: docker:!localhost:!test
   gather_facts: no
   tasks:
     - name: Check known_hosts for each hostname
@@ -29,7 +29,7 @@
 # Basic OS config
 #
 # All environments except localhost
-- hosts: docker:!localhost
+- hosts: docker:!localhost:!test
   tasks:
     - name: Set timezone to Etc/UTC
       become: True

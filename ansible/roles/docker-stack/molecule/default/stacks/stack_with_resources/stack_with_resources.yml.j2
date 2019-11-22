@@ -1,0 +1,14 @@
+version: "3.6"
+
+configs:
+  example_app_config:
+    file: ./resources/test.txt
+
+services:
+  helloworld:
+    image: nginxdemos/hello:0.2
+    configs:
+      - example_app_config
+    deploy:
+      mode: replicated
+      replicas: 1

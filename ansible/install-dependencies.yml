@@ -19,9 +19,9 @@
 
     - name: Install Terraform
       shell: >
-          wget -O /tmp/terraform.zip "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
-          && unzip -d ~/.local/bin /tmp/terraform.zip
-          && rm -f /tmp/terraform.zip
+        wget -O /tmp/terraform.zip "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
+        && unzip -d ~/.local/bin /tmp/terraform.zip
+        && rm -f /tmp/terraform.zip
       environment:
         TERRAFORM_VERSION: 0.12.12
       args:
@@ -38,15 +38,15 @@
         name:
           - ansible-lint
           - docker
-          - molecule
+          - molecule==2.22
           - molecule[docker]
 
     - name: Install shellcheck
       become: True
       shell: >
-          (wget -qO- "https://storage.googleapis.com/shellcheck/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" | tar -xJv --directory /tmp)
-          && cp "/tmp/shellcheck-${SHELLCHECK_VERSION}/shellcheck" /usr/bin/
-          && rm -rf /tmp/shellcheck-${SHELLCHECK_VERSION}
+        (wget -qO- "https://storage.googleapis.com/shellcheck/shellcheck-${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" | tar -xJv --directory /tmp)
+        && cp "/tmp/shellcheck-${SHELLCHECK_VERSION}/shellcheck" /usr/bin/
+        && rm -rf /tmp/shellcheck-${SHELLCHECK_VERSION}
       environment:
         SHELLCHECK_VERSION: v0.6.0
       args:

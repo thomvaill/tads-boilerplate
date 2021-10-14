@@ -148,12 +148,21 @@ You can also manually install the dependencies if your preferer.
 
 ### 3. Provision your local machine and deploy the example stack
 
+1. Copy `ansible/group_vars/localhost_overrides.sample.yml` to `ansible/group_vars/localhost_overrides.yml`  
+2. Add `ansible_user` variable with your user name
+
+```raw
+ansible_user: <yourUserName>
+```
+
+3. Provision and Deploy
+
 ```bash
 ./tads ansible-playbook localhost provision
 ./tads ansible-playbook localhost deploy
 ```
 
-The first command will:
+The first `./tads` command will:
 
 - Install Docker on your local machine
 - Set up a Swarm cluster with one manager node

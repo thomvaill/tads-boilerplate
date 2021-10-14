@@ -16,7 +16,7 @@ check_ansible () {
     fi
 
     local current_ansible_version
-    current_ansible_version="$(ansible --version | head -n1 | cut -d " " -f2)"
+    current_ansible_version="$(ansible --version | head -n1 | cut -d " " -f3 | cut -c1-4)"
 
     if ! is_version_gte "${current_ansible_version}" "${TADS_MIN_ANSIBLE_VERSION}"; then
         echo_red "Your Ansible version (${current_ansible_version}) is not supported by T.A.D.S."

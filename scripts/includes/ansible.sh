@@ -6,7 +6,12 @@ readonly TADS_MIN_ANSIBLE_VERSION="2.8"
 export ANSIBLE_DEPRECATION_WARNINGS="False"
 
 get_ansible_remote_environments () {
-    ls -1 -I "localhost" -I "*.sample*" "${ROOT_PATH}/ansible/inventories"
+    # Test for Mac GNU ls command (installed in `ansible/install-dependencies.yml`)
+    if [ -f /usr/local/opt/coreutils/libexec/gnubin/ls ] ; then
+        /usr/local/opt/coreutils/libexec/gnubin/ls -1 -I "localhost" -I "*.sample*" "${ROOT_PATH}/ansible/inventories"
+    else
+        ls -1 -I "localhost" -I "*.sample*" "${ROOT_PATH}/ansible/inventories"
+    fi
 }
 
 check_ansible () {

@@ -34,6 +34,7 @@
         name: "{{ item }}"
         state: present
       with_items:
+        - coreutils # for GNU ls
         - jq
       when: ansible_facts['os_family'] == "Darwin"
 

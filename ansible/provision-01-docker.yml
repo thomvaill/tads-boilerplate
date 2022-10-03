@@ -9,6 +9,7 @@
   become: True
   roles:
     - role: geerlingguy.pip
+      pip_executable: pip3
       vars:
         pip_install_packages:
         - name: jsondiff # needed by Ansible docker_stack module

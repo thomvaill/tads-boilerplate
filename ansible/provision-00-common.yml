@@ -43,4 +43,10 @@
         key: "{{ item }}"
       with_items: "{{ docker_authorized_ssh_keys }}"
 
+    - name: Install Pip
+      become: True
+      apt:
+        name: python3-pip
+        update_cache: true
+
     # ADD YOUR OWN TASKS HERE

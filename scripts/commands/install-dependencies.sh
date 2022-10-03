@@ -62,14 +62,20 @@ main () {
 
     echo "Installing Ansible..."
     if ! command -v ansible > /dev/null; then
-        echo "Your SUDO password may be asked"
+        if command -v apt-get > /dev/null; then
+            echo "Your SUDO password may be asked"
 
-        [[ "${TADS_VERBOSE:-}" == true ]] &&  set -x
-        sudo apt-get update \
-        && sudo apt-get --yes install software-properties-common \
-        && sudo apt-add-repository --yes --update ppa:ansible/ansible \
-        && sudo apt-get --yes install ansible
-        set +x
+            [[ "${TADS_VERBOSE:-}" == true ]] &&  set -x
+            sudo apt-get update \
+            && sudo apt-get --yes install software-properties-common \
+            && sudo apt-add-repository --yes --update ppa:ansible/ansible \
+            && sudo apt-get --yes install ansible
+            set +x
+        else
+            echo "Unable to work out how to install Ansible.  Either install it first, manually,"
+            echo "or update the ${SELF_PATH}/${SELF_NAME} script"
+            echo "to support installing automatically on your OS."
+        fi
     else
         echo "Ansible is already installed. Skipping"
     fi

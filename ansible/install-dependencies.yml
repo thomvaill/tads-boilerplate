@@ -7,7 +7,7 @@
 
 - hosts: localhost
   tasks:
-    - name: Install Vagrant, Virtualbox and other dependencies
+    - name: Install Vagrant, Virtualbox and other dependencies (linux)
       become: yes
       package:
         name: "{{ item }}"
@@ -16,8 +16,29 @@
         - virtualbox
         - vagrant
         - jq
+      when: ansible_facts['os_family'] != "Darwin"
 
-    - name: Install Terraform
+    - name: Install Vagrant & Virtualbox (mac)
+      become: no
+      homebrew_cask:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - virtualbox
+        - vagrant
+      when: ansible_facts['os_family'] == "Darwin"
+
+    - name: Other dependencies (mac)
+      become: no
+      homebrew:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - coreutils # for GNU ls
+        - jq
+      when: ansible_facts['os_family'] == "Darwin"
+
+    - name: Install Terraform (linux)
       shell: >
         wget -O /tmp/terraform.zip "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip"
         && unzip -d ~/.local/bin /tmp/terraform.zip
@@ -27,6 +48,19 @@
       args:
         creates: ~/.local/bin/terraform
         warn: False
+      when: ansible_facts['os_family'] != "Darwin"
+
+    - name: Install Terraform Homebrew Tap (Mac)
+      homebrew_tap:
+        name: hashicorp/tap
+        state: present
+      when: ansible_facts['os_family'] == "Darwin"
+
+    - name: Install Terraform (Mac)
+      homebrew:
+        name: hashicorp/tap/terraform
+        state: present
+      when: ansible_facts['os_family'] == "Darwin"
 
 - hosts: localhost
   tags:
